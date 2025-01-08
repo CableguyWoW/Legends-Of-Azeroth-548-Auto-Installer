@@ -198,8 +198,10 @@ if [ -f "authserver.conf.dist" ]; then
 fi
 ## Changing Config values
 echo "Changing Config values"
-sed -i 's^LogsDir = ""^LogsDir = "/home/'${SETUP_AUTH_USER}'/server/logs"^g' authserver.conf
+sed -i 's^LogsDir = "Logs"^LogsDir = "/home/'${SETUP_AUTH_USER}'/server/logs"^g' authserver.conf
+sed -i 's^SourceDirectory  = ""^SourceDirectory = "/home/'${SETUP_AUTH_USER}'/source/"^g' worldserver.conf
 sed -i "s/Updates.EnableDatabases = 0/Updates.EnableDatabases = 1/g" authserver.conf
+sed -i "s/Updates.AutoSetup   = 0/Updates.AutoSetup = 1/g" authserver.conf
 sed -i "s/127.0.0.1;3306;root;root;auth/${AUTH_DB_HOST};3306;${AUTH_DB_USER};${AUTH_DB_PASS};${AUTH_DB_USER};/g" authserver.conf
 fi
 
