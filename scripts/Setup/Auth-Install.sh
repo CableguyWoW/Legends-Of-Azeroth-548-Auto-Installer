@@ -34,6 +34,7 @@ echo ""
 ((NUM++)); echo "- [$NUM] : Setup MySQL Database & Users"
 ((NUM++)); echo "- [$NUM] : Pull and Setup Source"
 ((NUM++)); echo "- [$NUM] : Setup Authserver Config"
+((NUM++)); echo "- [$NUM] : Setup Database Data"
 ((NUM++)); echo "- [$NUM] : Setup Restarter"
 ((NUM++)); echo "- [$NUM] : Setup Crontab"
 ((NUM++)); echo "- [$NUM] : Setup Alias"
@@ -201,8 +202,28 @@ echo "Changing Config values"
 sed -i 's^LogsDir = "Logs"^LogsDir = "/home/'${SETUP_AUTH_USER}'/server/logs"^g' authserver.conf
 sed -i 's^SourceDirectory  = ""^SourceDirectory = "/home/'${SETUP_AUTH_USER}'/source/"^g' authserver.conf
 sed -i "s/Updates.EnableDatabases = 0/Updates.EnableDatabases = 1/g" authserver.conf
-sed -i "s/Updates.AutoSetup   = 0/Updates.AutoSetup = 1/g" authserver.conf
+sed -i "s/Updates.AutoSetup   = 1/Updates.AutoSetup = 0/g" authserver.conf
 sed -i "s/127.0.0.1;3306;root;root;auth/${AUTH_DB_HOST};3306;${AUTH_DB_USER};${AUTH_DB_PASS};${AUTH_DB_USER};/g" authserver.conf
+fi
+
+
+((NUM++))
+if [ "$1" = "all" ] || [ "$1" = "$NUM" ]; then
+echo ""
+echo "##########################################################"
+echo "## $NUM.Setup Database Data"
+echo "##########################################################"
+echo ""
+# Applying SQL base
+SQL_FILE="/home/$SETUP_AUTH_USER/source/sql/base/auth.sql"
+# Check if 'uptime' table exists in the 'auth' database
+TABLE_CHECK=$(mysql -u "$ROOT_USER" -p"$ROOT_PASS" -e "SHOW TABLES LIKE 'uptime';" auth | grep -c "uptime")
+if [ "$TABLE_CHECK" -gt 0 ]; then
+    echo "'uptime' table exists. Skipping SQL execution."
+else
+    echo "'uptime' table does not exist. Proceeding to execute SQL file..."
+    mysql -u "$ROOT_USER" -p"$ROOT_PASS" auth < "$SQL_FILE"
+fi
 fi
 
 

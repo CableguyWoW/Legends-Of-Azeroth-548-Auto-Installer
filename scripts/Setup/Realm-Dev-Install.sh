@@ -230,16 +230,16 @@ fi
 
 
 ((NUM++))
-if [ "$1" = "all" ] || [ "$1" = "update" ] || [ "$1" = "$NUM" ]; then
+if [ "$1" = "all" ] || [ "$1" = "$NUM" ]; then
 echo ""
 echo "##########################################################"
-echo "## $NUM. Downloading Database"
+echo "## $NUM.Setup Database Data"
 echo "##########################################################"
 echo ""
-
 FILENAME="${DB_REPO_URL##*/}"           # Get the filename from the URL
 FOLDERNAME="${FILENAME%.7z}"  # Removes .7z from the filename
-TARGET_DIR="/home/$SETUP_REALM_USER/server"
+SQLNAME="${FOLDERNAME}.sql"  # Appends .sql to the filename
+TARGET_DIR="/home/$SETUP_AUTH_USER/source/sql/base/"
 cd "$TARGET_DIR" || { echo "Directory does not exist: $TARGET_DIR"; exit 1; }
 if [ -d "$TARGET_DIR/$FOLDERNAME" ]; then
 	while true; do
@@ -262,6 +262,33 @@ fi
 if [ -f "$FILENAME" ]; then
     7z x "$FILENAME" -o"$TARGET_DIR"
 	rm "$TARGET_DIR/$FILENAME"
+fi
+fi
+
+# World
+# Applying SQL base
+SQL_FILE="/home/$SETUP_AUTH_USER/source/sql/base/$SQLNAME.sql"
+# Check if 'worldstates' table exists in the 'auth' database
+TABLE_CHECK=$(mysql -u "$ROOT_USER" -p"$ROOT_PASS" -e "SHOW TABLES LIKE 'worldstates';" auth | grep -c "worldstates")
+if [ "$TABLE_CHECK" -gt 0 ]; then
+    echo "'worldstates' table exists. Skipping SQL execution."
+else
+    echo "'worldstates' table does not exist. Proceeding to execute SQL file..."
+    mysql -u "$ROOT_USER" -p"$ROOT_PASS" auth < "$SQL_FILE"
+fi
+fi
+
+# Character
+# Applying SQL base
+SQL_FILE="/home/$SETUP_AUTH_USER/source/sql/base/characters.sql"
+# Check if 'worldstates' table exists in the 'auth' database
+TABLE_CHECK=$(mysql -u "$ROOT_USER" -p"$ROOT_PASS" -e "SHOW TABLES LIKE 'worldstates';" auth | grep -c "worldstates")
+if [ "$TABLE_CHECK" -gt 0 ]; then
+    echo "'worldstates' table exists. Skipping SQL execution."
+else
+    echo "'worldstates' table does not exist. Proceeding to execute SQL file..."
+    mysql -u "$ROOT_USER" -p"$ROOT_PASS" auth < "$SQL_FILE"
+fi
 fi
 fi
 
