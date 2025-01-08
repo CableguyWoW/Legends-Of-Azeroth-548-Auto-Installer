@@ -201,7 +201,7 @@ make install
 fi
 cd /home/$SETUP_AUTH_USER/server/etc/
 if [ -f "authserver.conf.dist" ]; then
-    mv "authserver.conf.dist" "authserver.conf"
+    mv -f "authserver.conf.dist" "authserver.conf"
     echo "Moved authserver.conf.dist to authserver.conf."
 fi
 ## Changing Config values

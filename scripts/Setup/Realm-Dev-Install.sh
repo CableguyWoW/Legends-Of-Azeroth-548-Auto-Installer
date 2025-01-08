@@ -176,6 +176,7 @@ if [ -f "/home/$SETUP_REALM_USER/server/bin/worldserver" ]; then
                 cmake /home/$SETUP_REALM_USER/source/ -DCMAKE_INSTALL_PREFIX=/home/$SETUP_REALM_USER/server -DSCRIPTS_EASTERNKINGDOMS="disabled" -DSCRIPTS_EVENTS="disabled" -DSCRIPTS_KALIMDOR="disabled" -DSCRIPTS_NORTHREND="disabled" -DSCRIPTS_OUTDOORPVP="disabled" -DSCRIPTS_OUTLAND="disabled" -DWITH_DYNAMIC_LINKING=ON -DSCRIPTS="dynamic" -DSCRIPTS_CUSTOM="dynamic" -DUSE_COREPCH=1 -DUSE_SCRIPTPCH=1 -DSERVERS=1 -DTOOLS=1 -DCMAKE_BUILD_TYPE=RelWithDebInfo -DWITH_COREDEBUG=0 -DWITH_WARNINGS=0
                 make -j $(( $(nproc) - 1 ))
                 make install
+                MAKE_INSTALLED="true"
                 break
             elif [[ "$file_choice" =~ ^[Nn]$ ]]; then
                 echo "Skipping download." && break
@@ -193,6 +194,7 @@ if [ -f "/home/$SETUP_REALM_USER/server/bin/worldserver" ]; then
         cmake /home/$SETUP_REALM_USER/source/ -DCMAKE_INSTALL_PREFIX=/home/$SETUP_REALM_USER/server -DSCRIPTS_EASTERNKINGDOMS="disabled" -DSCRIPTS_EVENTS="disabled" -DSCRIPTS_KALIMDOR="disabled" -DSCRIPTS_NORTHREND="disabled" -DSCRIPTS_OUTDOORPVP="disabled" -DSCRIPTS_OUTLAND="disabled" -DWITH_DYNAMIC_LINKING=ON -DSCRIPTS="dynamic" -DSCRIPTS_CUSTOM="dynamic" -DUSE_COREPCH=1 -DUSE_SCRIPTPCH=1 -DSERVERS=1 -DTOOLS=1 -DCMAKE_BUILD_TYPE=RelWithDebInfo -DWITH_COREDEBUG=0 -DWITH_WARNINGS=0
         make -j $(( $(nproc) - 1 ))
         make install
+        MAKE_INSTALLED="true"
     fi
 fi
 fi
@@ -205,8 +207,12 @@ echo "##########################################################"
 echo "## $NUM.Setup Config"
 echo "##########################################################"
 echo ""
+if [ "$MAKE_INSTALLED" != "true" ]; then
+cd /home/$SETUP_REALM_USER/source/build
+make install
+fi
 cd /home/$SETUP_REALM_USER/server/etc/
-mv worldserver.conf.dist worldserver.conf
+mv -f worldserver.conf.dist worldserver.conf
 ## Changing Config values
 echo "Changing Config values"
 ## Misc Edits
@@ -219,8 +225,8 @@ sed -i 's^LogsDir = "Logs"^LogsDir = "/home/'${SETUP_REALM_USER}'/server/logs"^g
 sed -i 's^DataDir = "Data"^DataDir = "/home/'${SETUP_REALM_USER}'/server/data"^g' worldserver.conf
 sed -i 's^BuildDirectory  = ""^BuildDirectory  = "/home/'${SETUP_REALM_USER}'/source/build"^g' worldserver.conf
 sed -i 's^SourceDirectory  = ""^SourceDirectory  = "/home/'${SETUP_REALM_USER}'/source/"^g' worldserver.conf
-sed -i "s/Updates.EnableDatabases = 1/Updates.EnableDatabases = 0/g" authserver.conf
-sed -i "s/Updates.AutoSetup   = 1/Updates.AutoSetup = 0/g" authserver.conf
+sed -i "s/Updates.EnableDatabases = 1/Updates.EnableDatabases = 0/g" worldserver.conf
+sed -i "s/Updates.AutoSetup   = 1/Updates.AutoSetup = 0/g" worldserver.conf
 REALM_NAME=$(printf '%s\n' "$REALM_NAME" | sed "s/'/'\\\\''/g")
 sed -i "s|Welcome to a Pandaria server.|Welcome to the '${REALM_NAME}'|g" worldserver.conf
 sed -i '/^PlayerLimit/s/= 100$/= 10000/' worldserver.conf
