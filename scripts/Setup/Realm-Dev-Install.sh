@@ -219,6 +219,8 @@ sed -i 's^LogsDir = "Logs"^LogsDir = "/home/'${SETUP_REALM_USER}'/server/logs"^g
 sed -i 's^DataDir = "Data"^DataDir = "/home/'${SETUP_REALM_USER}'/server/data"^g' worldserver.conf
 sed -i 's^BuildDirectory  = ""^BuildDirectory  = "/home/'${SETUP_REALM_USER}'/source/build"^g' worldserver.conf
 sed -i 's^SourceDirectory  = ""^SourceDirectory  = "/home/'${SETUP_REALM_USER}'/source/"^g' worldserver.conf
+sed -i "s/Updates.EnableDatabases = 1/Updates.EnableDatabases = 0/g" authserver.conf
+sed -i "s/Updates.AutoSetup   = 1/Updates.AutoSetup = 0/g" authserver.conf
 REALM_NAME=$(printf '%s\n' "$REALM_NAME" | sed "s/'/'\\\\''/g")
 sed -i "s|Welcome to a Pandaria server.|Welcome to the '${REALM_NAME}'|g" worldserver.conf
 sed -i '/^PlayerLimit/s/= 100$/= 10000/' worldserver.conf
