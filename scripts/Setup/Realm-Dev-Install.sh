@@ -160,10 +160,14 @@ if [ -d "/home/$SETUP_REALM_USER/source" ]; then
                 echo "Please answer y (yes) or n (no)."
             fi
         done
-    else
+    if [ "$1" = "all" ] || [ "$1" = "$NUM" ]; then
         ## Source install
         git clone --single-branch --branch $CORE_BRANCH "$CORE_REPO_URL" source
     fi
+fi
+if [ -d "/home/$SETUP_REALM_USER/source" ]; then
+    echo "Source not found, somehow didn't clone... cancelling..."
+    exit 1
 fi
 if [ -f "/home/$SETUP_REALM_USER/server/bin/worldserver" ]; then
     if [ "$1" != "update" ]; then
