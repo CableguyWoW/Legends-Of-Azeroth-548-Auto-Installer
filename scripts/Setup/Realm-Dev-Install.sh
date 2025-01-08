@@ -278,7 +278,6 @@ if [ -f "$FILENAME" ]; then
     7z x "$FILENAME" -o"$TARGET_DIR"
 	rm "$TARGET_DIR/$FILENAME"
 fi
-fi
 
 # World
 # Applying SQL base
@@ -290,7 +289,6 @@ if [ "$TABLE_CHECK" -gt 0 ]; then
 else
     echo "'worldstates' table does not exist. Proceeding to execute SQL file..."
     mysql -u "$ROOT_USER" -p"$ROOT_PASS" auth < "$SQL_FILE"
-fi
 fi
 
 # Character
@@ -304,7 +302,7 @@ else
     echo "'worldstates' table does not exist. Proceeding to execute SQL file..."
     mysql -u "$ROOT_USER" -p"$ROOT_PASS" auth < "$SQL_FILE"
 fi
-fi
+
 fi
 
 
