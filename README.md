@@ -1,12 +1,12 @@
 # Legends-Of-Azeroth-548-Auto-Installer
 
-**Legends-Of-Azeroth-548-Auto-Installer** is tool that helps you set up **Legends of Azeroth 5.4.8 MOP** servers on **Debian 12**. With this installer, you can quickly configure your server environment so you can focus on your custom creations.
+**Legends-Of-Azeroth-548-Auto-Installer** is tool that helps you set up **Legends of Azeroth 5.4.8 MOP** servers on **Debian 12/13**. With this installer, you can quickly configure your server environment so you can focus on your custom creations.
 
 ## Feature Highlights
 
 - **Install Requirements**: Quickly installs all necessary software to run Skyfire on Linux.
 - **Source Code Management**: Downloads the Skyfire source code and sets up both the Auth server and World server.
-- **Client Data Generation**: Downloads the 3.3.5a Client and Extract DBC/Maps/VMaps/MMAPs automatically.
+- **Client Data Generation**: Downloads the 5.4.8 MOP Client and Extract DBC/Maps/VMaps/MMAPs automatically.
 - **MySQL Setup**: Automatically installs and configures MySQL, including random password generation and enabling remote access.
 - **Database Configuration**: Creates the required MySQL databases and user accounts.
 - **Safety Measures**: Configures a firewall and installs **Fail2Ban** for enhanced security against bruteforce.
@@ -58,7 +58,7 @@ The following tasks are related to the Realm server setup:
 - **Pull and Setup Source**: Download and configure the source code for the World server.
 - **Setup Worldserver Config**: Configure the settings for the World server.
 - **Pull and Setup Database**: Download and configure the database for the World server.
-- **Download 3.3.5a Client**: Fetch the necessary client files for version 3.3.5a.
+- **Download 5.4.8 MOP Client**: Fetch the necessary client files for version 5.4.8
 - **Setup Client Tools**: Prepare tools necessary for managing the client.
 - **Run Map/DBC Extractor**: Extract Map and DBC files for use in the game world.
 - **Run VMap Extractor**: Extract VMap files for navigation and environment mapping.
