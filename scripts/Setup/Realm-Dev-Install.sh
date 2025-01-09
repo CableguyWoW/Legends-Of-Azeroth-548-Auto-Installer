@@ -402,6 +402,7 @@ echo "Client tools copied over to /home/WoW548"
 else
 echo "No need to setup client tools as client download disabled."
 fi
+fi
 
 
 ((NUM++))
