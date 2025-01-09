@@ -301,6 +301,75 @@ else
     mysql -u "$ROOT_USER" -p"$ROOT_PASS" ${SETUP_REALM_USER}_world < "$SQL_FILE"
 fi
 
+# Function to apply SQL updates in the specified directory to the specified database
+apply_sql_updates() 
+{
+    UPDATES_DIR="$1"
+    TARGET_DB="$2"
+
+    # Ensure the updates directory exists
+    if [ ! -d "$UPDATES_DIR" ]; then
+        echo "Error: Directory $UPDATES_DIR does not exist."
+        return 1
+    fi
+
+    # Get the list of SQL files sorted by date (based on filename)
+    SQL_FILES=$(ls "$UPDATES_DIR"/*.sql 2>/dev/null | sort)
+
+    if [ -z "$SQL_FILES" ]; then
+        echo "No SQL files found in $UPDATES_DIR."
+        return 0
+    fi
+
+    echo "Processing SQL updates from $UPDATES_DIR for database $TARGET_DB."
+
+    # Process each SQL file
+    for FILE in $SQL_FILES; do
+        FILENAME=$(basename "$FILE")
+        FILE_HASH=$(sha1sum "$FILE" | awk '{print $1}')
+
+        # Check if the update has already been applied
+        QUERY="SELECT COUNT(*) FROM updates WHERE name = '$FILENAME' AND hash = '$FILE_HASH';"
+        ALREADY_APPLIED=$(mysql -u "$ROOT_USER" -p"$ROOT_PASS" -D "$TARGET_DB" -se "$QUERY")
+        
+        if [ "$ALREADY_APPLIED" -eq 0 ]; then
+            echo "Applying update: $FILENAME"
+            
+            # Record the start time
+            START_TIME=$(date +%s%3N)
+            
+            # Apply the SQL file
+            mysql -u "$ROOT_USER" -p"$ROOT_PASS" -D "$TARGET_DB" < "$FILE"
+            if [ $? -eq 0 ]; then
+                END_TIME=$(date +%s%3N)
+                SPEED=$((END_TIME - START_TIME))
+                echo "Successfully applied $FILENAME in ${SPEED}ms."
+                
+                # Insert the update into the `updates` table
+                INSERT_QUERY="INSERT INTO updates (name, hash, state, timestamp, speed) VALUES ('$FILENAME', '$FILE_HASH', 'RELEASED', NOW(), $SPEED);"
+                mysql -u "$ROOT_USER" -p"$ROOT_PASS" -D "$TARGET_DB" -se "$INSERT_QUERY"
+                
+                if [ $? -eq 0 ]; then
+                    echo "Recorded $FILENAME in updates table."
+                else
+                    echo "Error recording $FILENAME in updates table."
+                fi
+            else
+                echo "Error applying $FILENAME. Exiting."
+                return 1
+            fi
+        else
+            echo "Update $FILENAME with hash $FILE_HASH has already been applied. Skipping."
+        fi
+    done
+
+    echo "All updates processed for database $TARGET_DB."
+    return 0
+}
+
+# All World updates after base import
+apply_sql_updates "/home/$SETUP_REALM_USER/source/sql/updates/world" "${SETUP_REALM_USER}_world"
+
 # Character
 # Applying SQL base
 SQL_FILE="/home/$SETUP_REALM_USER/source/sql/base/characters.sql"
