@@ -504,25 +504,26 @@ else
         ./mapextractor
     fi
 fi
-while true; do
-	read -p "Would you like to copy the maps/dbc data folders? (y/n): " folder_choice
-	if [[ "$folder_choice" =~ ^[Yy]$ ]]; then
-        if [ "$DOWNLOAD_SKIPPED" != "true" ]; then
-            echo "Copying dbc folder"
-            cp -r /home/WoW548/dbc /home/$SETUP_REALM_USER/server/data/
-            echo "Copying Cameras folder"
-            cp -r /home/WoW548/Cameras /home/$SETUP_REALM_USER/server/data/
-            echo "Copying maps folder"
-            cp -r /home/WoW548/maps /home/$SETUP_REALM_USER/server/data/
+if [ ! -d "/home/WoW548/maps" ]; then
+    while true; do
+        read -p "Would you like to copy the maps/dbc data folders? (y/n): " folder_choice
+        if [[ "$folder_choice" =~ ^[Yy]$ ]]; then
+            if [ "$DOWNLOAD_SKIPPED" != "true" ]; then
+                echo "Copying dbc folder"
+                cp -r /home/WoW548/dbc /home/$SETUP_REALM_USER/server/data/
+                echo "Copying Cameras folder"
+                cp -r /home/WoW548/Cameras /home/$SETUP_REALM_USER/server/data/
+                echo "Copying maps folder"
+                cp -r /home/WoW548/maps /home/$SETUP_REALM_USER/server/data/
+            fi
+            break
+        elif [[ "$folder_choice" =~ ^[Nn]$ ]]; then
+            echo "Skipping data copy." && break
+        else
+            echo "Please answer y (yes) or n (no)."
         fi
-        break
-	elif [[ "$folder_choice" =~ ^[Nn]$ ]]; then
-		echo "Skipping data copy." && break
-	else
-		echo "Please answer y (yes) or n (no)."
-	fi
-done
-
+    done
+fi
 fi
 
 ((NUM++))
@@ -552,22 +553,24 @@ else
         ./vmap4extractor && ./vmap4assembler
     fi
 fi
-while true; do
-	read -p "Would you like to copy the vmap data folders? (y/n): " folder_choice
-	if [[ "$folder_choice" =~ ^[Yy]$ ]]; then
-        if [ "$DOWNLOAD_SKIPPED" != "true" ]; then
-            echo "Copying Buildings folder"
-            cp -r /home/WoW548/Buildings /home/$SETUP_REALM_USER/server/data/
-            echo "Copying vmaps folder"
-            cp -r /home/WoW548/vmaps /home/$SETUP_REALM_USER/server/data/
+if [ ! -d "/home/WoW548/vmaps" ]; then
+    while true; do
+        read -p "Would you like to copy the vmap data folders? (y/n): " folder_choice
+        if [[ "$folder_choice" =~ ^[Yy]$ ]]; then
+            if [ "$DOWNLOAD_SKIPPED" != "true" ]; then
+                echo "Copying Buildings folder"
+                cp -r /home/WoW548/Buildings /home/$SETUP_REALM_USER/server/data/
+                echo "Copying vmaps folder"
+                cp -r /home/WoW548/vmaps /home/$SETUP_REALM_USER/server/data/
+            fi
+            break
+        elif [[ "$folder_choice" =~ ^[Nn]$ ]]; then
+            echo "Skipping data copy." && break
+        else
+            echo "Please answer y (yes) or n (no)."
         fi
-        break
-	elif [[ "$folder_choice" =~ ^[Nn]$ ]]; then
-		echo "Skipping data copy." && break
-	else
-		echo "Please answer y (yes) or n (no)."
-	fi
-done
+    done
+fi
 fi
 
 ((NUM++))
@@ -597,20 +600,22 @@ else
 	    ./mmaps_generator
     fi
 fi
-while true; do
-	read -p "Would you like to copy the mmaps data folders? (y/n): " folder_choice
-	if [[ "$folder_choice" =~ ^[Yy]$ ]]; then
-        if [ "$DOWNLOAD_SKIPPED" != "true" ]; then
-            echo "Copying mmaps folder"
-            cp -r /home/WoW548/mmaps /home/$SETUP_REALM_USER/server/data/
+if [ ! -d "/home/WoW548/mmaps" ]; then
+    while true; do
+        read -p "Would you like to copy the mmaps data folders? (y/n): " folder_choice
+        if [[ "$folder_choice" =~ ^[Yy]$ ]]; then
+            if [ "$DOWNLOAD_SKIPPED" != "true" ]; then
+                echo "Copying mmaps folder"
+                cp -r /home/WoW548/mmaps /home/$SETUP_REALM_USER/server/data/
+            fi
+            break
+        elif [[ "$folder_choice" =~ ^[Nn]$ ]]; then
+            echo "Skipping data copy." && break
+        else
+            echo "Please answer y (yes) or n (no)."
         fi
-		break
-	elif [[ "$folder_choice" =~ ^[Nn]$ ]]; then
-		echo "Skipping data copy." && break
-	else
-		echo "Please answer y (yes) or n (no)."
-	fi
-done
+    done
+fi
 fi
 
 ((NUM++))
