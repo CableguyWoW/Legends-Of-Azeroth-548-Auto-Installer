@@ -132,78 +132,86 @@ echo "Flushed privileges."
 echo "Setup World DB Account completed."
 fi
 
+#!/bin/bash
 
-((NUM++))
+NUM=$((NUM + 1))
+
 if [ "$1" = "all" ] || [ "$1" = "update" ] || [ "$1" = "$NUM" ]; then
 echo ""
 echo "##########################################################"
-echo "## $NUM.Pulling Source"
+echo "## $NUM. Pulling Source"
 echo "##########################################################"
 echo ""
-cd /home/$SETUP_REALM_USER/
-mkdir /home/$SETUP_REALM_USER/server/
-mkdir /home/$SETUP_REALM_USER/server/logs/
-mkdir /home/$SETUP_REALM_USER/server/logs/crashes/
-mkdir /home/$SETUP_REALM_USER/server/data/
-if [ -d "/home/$SETUP_REALM_USER/source" ]; then
+
+SETUP_DIR="/home/$SETUP_REALM_USER"
+SERVER_DIR="$SETUP_DIR/server"
+SOURCE_DIR="$SETUP_DIR/source"
+
+build_source() {
+    echo "Building Source"
+    cd "$SOURCE_DIR" || { echo "Failed to change directory to source. Exiting."; exit 1; }
+    rm -rf "$SOURCE_DIR/build"
+    mkdir "$SOURCE_DIR/build"
+    cd "$SOURCE_DIR/build" || { echo "Failed to change to build directory. Exiting."; exit 1; }
+    cmake "$SOURCE_DIR" \
+        -DCMAKE_INSTALL_PREFIX="$SERVER_DIR" \
+        -DSCRIPTS_EASTERNKINGDOMS="disabled" \
+        -DSCRIPTS_EVENTS="disabled" \
+        -DSCRIPTS_KALIMDOR="disabled" \
+        -DSCRIPTS_NORTHREND="disabled" \
+        -DSCRIPTS_OUTDOORPVP="disabled" \
+        -DSCRIPTS_OUTLAND="disabled" \
+        -DWITH_DYNAMIC_LINKING=ON \
+        -DSCRIPTS="dynamic" \
+        -DSCRIPTS_CUSTOM="dynamic" \
+        -DUSE_COREPCH=1 \
+        -DUSE_SCRIPTPCH=1 \
+        -DSERVERS=1 \
+        -DTOOLS=1 \
+        -DCMAKE_BUILD_TYPE=RelWithDebInfo \
+        -DWITH_COREDEBUG=0 \
+        -DWITH_WARNINGS=0 || { echo "CMake failed. Exiting."; exit 1; }
+    make -j $(( $(nproc) - 1 )) || { echo "Build failed. Exiting."; exit 1; }
+    make install || { echo "Install failed. Exiting."; exit 1; }
+}
+
+mkdir -p "$SERVER_DIR/logs/crashes" "$SERVER_DIR/data"
+
+if [ -d "$SOURCE_DIR" ]; then
     if [ "$1" = "update" ]; then
         while true; do
             read -p "Source already exists. Redownload? (y/n): " file_choice
-            if [[ "$file_choice" =~ ^[Yy]$ ]]; then
-                rm -rf /home/$SETUP_REALM_USER/source
-                ## Source install
-                git clone --single-branch --branch $CORE_BRANCH "$CORE_REPO_URL" source
-                break
-            elif [[ "$file_choice" =~ ^[Nn]$ ]]; then
-                echo "Skipping download." && break
-            else
-                echo "Please answer y (yes) or n (no)."
-            fi
+            case "$file_choice" in
+                [Yy]*) rm -rf "$SOURCE_DIR"; git clone --single-branch --branch "$CORE_BRANCH" "$CORE_REPO_URL" "$SOURCE_DIR"; break ;;
+                [Nn]*) echo "Skipping download."; break ;;
+                *) echo "Please answer y (yes) or n (no)." ;;
+            esac
         done
     fi
-    if [ "$1" = "all" ] || [ "$1" = "$NUM" ]; then
-        ## Source install
-        git clone --single-branch --branch $CORE_BRANCH "$CORE_REPO_URL" source
-    fi
+else
+    git clone --single-branch --branch "$CORE_BRANCH" "$CORE_REPO_URL" "$SOURCE_DIR" || { echo "Git clone failed. Exiting."; exit 1; }
 fi
-if [ -d "/home/$SETUP_REALM_USER/source" ]; then
+
+if [ ! -d "$SOURCE_DIR" ]; then
     echo "Source not found, somehow didn't clone... cancelling..."
     exit 1
 fi
-if [ -f "/home/$SETUP_REALM_USER/server/bin/worldserver" ]; then
+
+if [ -f "$SERVER_DIR/bin/worldserver" ]; then
     if [ "$1" != "update" ]; then
         while true; do
             read -p "Worldserver already exists. Recompile source? (y/n): " file_choice
-            if [[ "$file_choice" =~ ^[Yy]$ ]]; then
-                ## Build source
-                echo "Building Source"
-                cd /home/$SETUP_REALM_USER/source/
-                rm -rf /home/$SETUP_REALM_USER/source/build
-                mkdir /home/$SETUP_REALM_USER/source/build
-                cd /home/$SETUP_REALM_USER/source/build
-                cmake /home/$SETUP_REALM_USER/source/ -DCMAKE_INSTALL_PREFIX=/home/$SETUP_REALM_USER/server -DSCRIPTS_EASTERNKINGDOMS="disabled" -DSCRIPTS_EVENTS="disabled" -DSCRIPTS_KALIMDOR="disabled" -DSCRIPTS_NORTHREND="disabled" -DSCRIPTS_OUTDOORPVP="disabled" -DSCRIPTS_OUTLAND="disabled" -DWITH_DYNAMIC_LINKING=ON -DSCRIPTS="dynamic" -DSCRIPTS_CUSTOM="dynamic" -DUSE_COREPCH=1 -DUSE_SCRIPTPCH=1 -DSERVERS=1 -DTOOLS=1 -DCMAKE_BUILD_TYPE=RelWithDebInfo -DWITH_COREDEBUG=0 -DWITH_WARNINGS=0
-                make -j $(( $(nproc) - 1 ))
-                make install
-                MAKE_INSTALLED="true"
-                break
-            elif [[ "$file_choice" =~ ^[Nn]$ ]]; then
-                echo "Skipping download." && break
-            else
-                echo "Please answer y (yes) or n (no)."
-            fi
+            case "$file_choice" in
+                [Yy]*) build_source; break ;;
+                [Nn]*) echo "Skipping rebuild."; break ;;
+                *) echo "Please answer y (yes) or n (no)." ;;
+            esac
         done
     else
-        ## Build source
-        echo "Building Source"
-        cd /home/$SETUP_REALM_USER/source/
-        rm -rf /home/$SETUP_REALM_USER/source/build
-        mkdir /home/$SETUP_REALM_USER/source/build
-        cd /home/$SETUP_REALM_USER/source/build
-        cmake /home/$SETUP_REALM_USER/source/ -DCMAKE_INSTALL_PREFIX=/home/$SETUP_REALM_USER/server -DSCRIPTS_EASTERNKINGDOMS="disabled" -DSCRIPTS_EVENTS="disabled" -DSCRIPTS_KALIMDOR="disabled" -DSCRIPTS_NORTHREND="disabled" -DSCRIPTS_OUTDOORPVP="disabled" -DSCRIPTS_OUTLAND="disabled" -DWITH_DYNAMIC_LINKING=ON -DSCRIPTS="dynamic" -DSCRIPTS_CUSTOM="dynamic" -DUSE_COREPCH=1 -DUSE_SCRIPTPCH=1 -DSERVERS=1 -DTOOLS=1 -DCMAKE_BUILD_TYPE=RelWithDebInfo -DWITH_COREDEBUG=0 -DWITH_WARNINGS=0
-        make -j $(( $(nproc) - 1 ))
-        make install
-        MAKE_INSTALLED="true"
+        build_source
     fi
+else
+    build_source
 fi
 fi
 
