@@ -132,10 +132,8 @@ echo "Flushed privileges."
 echo "Setup World DB Account completed."
 fi
 
-#!/bin/bash
 
-NUM=$((NUM + 1))
-
+((NUM++))
 if [ "$1" = "all" ] || [ "$1" = "update" ] || [ "$1" = "$NUM" ]; then
 echo ""
 echo "##########################################################"
@@ -263,14 +261,14 @@ echo ""
 FILENAME="${DB_REPO_URL##*/}"           # Get the filename from the URL
 FOLDERNAME="${FILENAME%.7z}"  # Removes .7z from the filename
 SQLNAME="${FOLDERNAME}.sql"  # Appends .sql to the filename
-TARGET_DIR="/home/$SETUP_AUTH_USER/source/sql/base/"
+TARGET_DIR="/home/$SETUP_REALM_USER/source/sql/base/"
 cd "$TARGET_DIR" || { echo "Directory does not exist: $TARGET_DIR"; exit 1; }
 if [ -d "$TARGET_DIR/$FOLDERNAME" ]; then
 	while true; do
 		read -p "$FOLDERNAME already exists. Redownload? (y/n): " file_choice
 		if [[ "$file_choice" =~ ^[Yy]$ ]]; then
 			rm -rf $TARGET_DIR/$FOLDERNAME
-			wget "$DB_REPO_URL"
+			sudo wget "$DB_REPO_URL"
 			break
 		elif [[ "$file_choice" =~ ^[Nn]$ ]]; then
 			echo "Skipping download." && break
@@ -279,18 +277,21 @@ if [ -d "$TARGET_DIR/$FOLDERNAME" ]; then
 		fi
 	done
 else
-	wget "$DB_REPO_URL"
+	sudo wget "$DB_REPO_URL"
 fi
 
 # Ensure the file exists before extracting
 if [ -f "$FILENAME" ]; then
     7z x "$FILENAME" -o"$TARGET_DIR"
 	rm "$TARGET_DIR/$FILENAME"
+    sudo chown $SETUP_REALM_USER:$SETUP_REALM_USER $TARGET_DIR/$SQLNAME
+    sudo chmod +x $TARGET_DIR/$SQLNAME
+
 fi
 
 # World
 # Applying SQL base
-SQL_FILE="/home/$SETUP_AUTH_USER/source/sql/base/$SQLNAME.sql"
+SQL_FILE="/home/$SETUP_REALM_USER/source/sql/base/$SQLNAME.sql"
 # Check if 'worldstates' table exists in the 'auth' database
 TABLE_CHECK=$(mysql -u "$ROOT_USER" -p"$ROOT_PASS" -e "SHOW TABLES LIKE 'worldstates';" auth | grep -c "worldstates")
 if [ "$TABLE_CHECK" -gt 0 ]; then
@@ -302,7 +303,7 @@ fi
 
 # Character
 # Applying SQL base
-SQL_FILE="/home/$SETUP_AUTH_USER/source/sql/base/characters.sql"
+SQL_FILE="/home/$SETUP_REALM_USER/source/sql/base/characters.sql"
 # Check if 'worldstates' table exists in the 'auth' database
 TABLE_CHECK=$(mysql -u "$ROOT_USER" -p"$ROOT_PASS" -e "SHOW TABLES LIKE 'worldstates';" auth | grep -c "worldstates")
 if [ "$TABLE_CHECK" -gt 0 ]; then
@@ -583,7 +584,7 @@ echo "## $NUM.Setup Misc Scripts"
 echo "##########################################################"
 echo ""
 cp -r -u /Legends-Of-Azeroth-548-Auto-Installer/scripts/Setup/Clean-Logs.sh /home/$SETUP_REALM_USER/server/scripts/
-chmod +x  /home/$SETUP_REALM_USER/server/scripts/Clean-Logs.sh
+sudo chmod +x  /home/$SETUP_REALM_USER/server/scripts/Clean-Logs.sh
 cd /home/$SETUP_REALM_USER/server/scripts/
 sudo sed -i "s^USER^${SETUP_REALM_USER}^g" Clean-Logs.sh
 # Setup Crontab
