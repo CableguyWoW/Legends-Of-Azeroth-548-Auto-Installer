@@ -283,14 +283,14 @@ fi
 # Ensure the file exists before extracting
 if [ -f "$FILENAME" ]; then
     7z x "$FILENAME" -o"$TARGET_DIR" -y
-    rm "$TARGET_DIR/$FILENAME"
+    rm -f "$TARGET_DIR/$FILENAME"
     sudo chown $SETUP_REALM_USER:$SETUP_REALM_USER $TARGET_DIR/$SQLNAME
     sudo chmod +x $TARGET_DIR/$SQLNAME
 fi
 
 # World
 # Applying SQL base
-SQL_FILE="/home/$SETUP_REALM_USER/source/sql/base/$SQLNAME.sql"
+SQL_FILE="/home/$SETUP_REALM_USER/source/sql/base/$SQLNAME"
 # Check if 'world_map_template' table exists in the 'auth' database
 TABLE_CHECK=$(mysql -u "$ROOT_USER" -p"$ROOT_PASS" -e "SHOW TABLES LIKE 'world_map_template';" auth | grep -c "world_map_template")
 if [ "$TABLE_CHECK" -gt 0 ]; then
