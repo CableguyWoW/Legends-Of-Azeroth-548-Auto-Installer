@@ -160,6 +160,7 @@ if [ -d "/home/$SETUP_REALM_USER/source" ]; then
                 echo "Please answer y (yes) or n (no)."
             fi
         done
+    fi
     if [ "$1" = "all" ] || [ "$1" = "$NUM" ]; then
         ## Source install
         git clone --single-branch --branch $CORE_BRANCH "$CORE_REPO_URL" source
