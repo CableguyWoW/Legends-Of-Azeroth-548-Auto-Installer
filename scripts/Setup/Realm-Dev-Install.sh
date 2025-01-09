@@ -375,7 +375,10 @@ if [ -f "/home/$FILENAME" ]; then
     while true; do
         read -p "Would you like to delete the 5.4.8 client zip folder to save folder space? (y/n): " folder_choice
         if [[ "$folder_choice" =~ ^[Yy]$ ]]; then
-            sudo rm $FILENAME && break
+            if [ "$DOWNLOAD_SKIPPED" != "true" ]; then
+            sudo rm $FILENAME
+            fi
+            break
         elif [[ "$folder_choice" =~ ^[Nn]$ ]]; then
             echo "Skipping deletion." && break
         else
@@ -417,7 +420,10 @@ if [ -d "/home/WoW548/maps" ]; then
     while true; do
         read -p "maps Folder already exists. Reextract? (y/n): " folder_choice
         if [[ "$folder_choice" =~ ^[Yy]$ ]]; then
-            ./mapextractor && break
+            if [ "$DOWNLOAD_SKIPPED" != "true" ]; then
+                ./mapextractor
+            fi
+            break
         elif [[ "$folder_choice" =~ ^[Nn]$ ]]; then
             echo "Skipping extraction." && break
         else
@@ -425,18 +431,22 @@ if [ -d "/home/WoW548/maps" ]; then
         fi
     done
 else
-	./mapextractor
+    if [ "$DOWNLOAD_SKIPPED" != "true" ]; then
+        ./mapextractor
+    fi
 fi
 while true; do
 	read -p "Would you like to copy the maps/dbc data folders? (y/n): " folder_choice
 	if [[ "$folder_choice" =~ ^[Yy]$ ]]; then
-		echo "Copying dbc folder"
-		cp -r /home/WoW548/dbc /home/$SETUP_REALM_USER/server/data/
-		echo "Copying Cameras folder"
-		cp -r /home/WoW548/Cameras /home/$SETUP_REALM_USER/server/data/
-		echo "Copying maps folder"
-		cp -r /home/WoW548/maps /home/$SETUP_REALM_USER/server/data/
-		break
+        if [ "$DOWNLOAD_SKIPPED" != "true" ]; then
+            echo "Copying dbc folder"
+            cp -r /home/WoW548/dbc /home/$SETUP_REALM_USER/server/data/
+            echo "Copying Cameras folder"
+            cp -r /home/WoW548/Cameras /home/$SETUP_REALM_USER/server/data/
+            echo "Copying maps folder"
+            cp -r /home/WoW548/maps /home/$SETUP_REALM_USER/server/data/
+        fi
+        break
 	elif [[ "$folder_choice" =~ ^[Nn]$ ]]; then
 		echo "Skipping data copy." && break
 	else
@@ -458,7 +468,10 @@ if [ -d "/home/WoW548/vmaps" ]; then
     while true; do
         read -p "vmaps Folder already exists. Reextract? (y/n): " folder_choice
         if [[ "$folder_choice" =~ ^[Yy]$ ]]; then
-            ./vmap4extractor && ./vmap4assembler && break
+            if [ "$DOWNLOAD_SKIPPED" != "true" ]; then
+                ./vmap4extractor && ./vmap4assembler
+            fi
+            break
         elif [[ "$folder_choice" =~ ^[Nn]$ ]]; then
             echo "Skipping extraction." && break
         else
@@ -466,16 +479,20 @@ if [ -d "/home/WoW548/vmaps" ]; then
         fi
     done
 else
-	./vmap4extractor && ./vmap4assembler
+    if [ "$DOWNLOAD_SKIPPED" != "true" ]; then
+        ./vmap4extractor && ./vmap4assembler
+    fi
 fi
 while true; do
 	read -p "Would you like to copy the vmap data folders? (y/n): " folder_choice
 	if [[ "$folder_choice" =~ ^[Yy]$ ]]; then
-		echo "Copying Buildings folder"
-		cp -r /home/WoW548/Buildings /home/$SETUP_REALM_USER/server/data/
-		echo "Copying vmaps folder"
-		cp -r /home/WoW548/vmaps /home/$SETUP_REALM_USER/server/data/
-		break
+        if [ "$DOWNLOAD_SKIPPED" != "true" ]; then
+            echo "Copying Buildings folder"
+            cp -r /home/WoW548/Buildings /home/$SETUP_REALM_USER/server/data/
+            echo "Copying vmaps folder"
+            cp -r /home/WoW548/vmaps /home/$SETUP_REALM_USER/server/data/
+        fi
+        break
 	elif [[ "$folder_choice" =~ ^[Nn]$ ]]; then
 		echo "Skipping data copy." && break
 	else
@@ -496,7 +513,10 @@ if [ -d "/home/WoW548/mmaps" ]; then
     while true; do
         read -p "mmaps Folder already exists. Reextract? (y/n): " folder_choice
         if [[ "$folder_choice" =~ ^[Yy]$ ]]; then
-            ./mmaps_generator && break
+            if [ "$DOWNLOAD_SKIPPED" != "true" ]; then
+                ./mmaps_generator
+            fi
+            break
         elif [[ "$folder_choice" =~ ^[Nn]$ ]]; then
             echo "Skipping extraction." && break
         else
@@ -504,13 +524,17 @@ if [ -d "/home/WoW548/mmaps" ]; then
         fi
     done
 else
-	./mmaps_generator
+    if [ "$DOWNLOAD_SKIPPED" != "true" ]; then
+	    ./mmaps_generator
+    fi
 fi
 while true; do
 	read -p "Would you like to copy the mmaps data folders? (y/n): " folder_choice
 	if [[ "$folder_choice" =~ ^[Yy]$ ]]; then
-		echo "Copying mmaps folder"
-		cp -r /home/WoW548/mmaps /home/$SETUP_REALM_USER/server/data/
+        if [ "$DOWNLOAD_SKIPPED" != "true" ]; then
+            echo "Copying mmaps folder"
+            cp -r /home/WoW548/mmaps /home/$SETUP_REALM_USER/server/data/
+        fi
 		break
 	elif [[ "$folder_choice" =~ ^[Nn]$ ]]; then
 		echo "Skipping data copy." && break
