@@ -292,12 +292,12 @@ fi
 # World
 # Applying SQL base
 SQL_FILE="/home/$SETUP_REALM_USER/source/sql/base/$SQLNAME.sql"
-# Check if 'worldstates' table exists in the 'auth' database
-TABLE_CHECK=$(mysql -u "$ROOT_USER" -p"$ROOT_PASS" -e "SHOW TABLES LIKE 'worldstates';" auth | grep -c "worldstates")
+# Check if 'world_map_template' table exists in the 'auth' database
+TABLE_CHECK=$(mysql -u "$ROOT_USER" -p"$ROOT_PASS" -e "SHOW TABLES LIKE 'world_map_template';" auth | grep -c "world_map_template")
 if [ "$TABLE_CHECK" -gt 0 ]; then
-    echo "'worldstates' table exists. Skipping SQL execution."
+    echo "'world_map_template' table exists. Skipping SQL execution."
 else
-    echo "'worldstates' table does not exist. Proceeding to execute SQL file..."
+    echo "'world_map_template' table does not exist. Proceeding to execute SQL file..."
     mysql -u "$ROOT_USER" -p"$ROOT_PASS" auth < "$SQL_FILE"
 fi
 
