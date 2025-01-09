@@ -297,6 +297,7 @@ if [ "$TABLE_CHECK" -gt 0 ]; then
     echo "'world_map_template' table exists. Skipping SQL execution."
 else
     echo "'world_map_template' table does not exist. Proceeding to execute SQL file..."
+    echo "THIS MAY TAKE A WHILE DUE TO SQL FILE SIZE!!!!...please be patient"
     mysql -u "$ROOT_USER" -p"$ROOT_PASS" ${SETUP_REALM_USER}_world < "$SQL_FILE"
 fi
 
@@ -342,6 +343,7 @@ else
             sudo wget $CLIENT_URL
         elif [[ "$file_choice" =~ ^[Nn]$ ]]; then
             echo "Skipping download." && break
+            DOWNLOAD_SKIPPED="true"
         else
             echo "Please answer y (yes) or n (no)."
         fi
@@ -361,11 +363,13 @@ if [ -d "/home/WoW548" ]; then
 else
 	sudo unzip "$FILENAME"
 fi
-if [ -d "/home/MOP-5.4.8.18414-enUS-Repack" ]; then
-	sudo mv -f /home/MOP-5.4.8.18414-enUS-Repack /home/WoW548
-fi
-if [ -d "/home/WoW548" ]; then
-	sudo chmod -R 777 /home/WoW548
+if [ "$DOWNLOAD_SKIPPED" != "true" ]; then
+    if [ -d "/home/MOP-5.4.8.18414-enUS-Repack" ]; then
+        sudo mv -f /home/MOP-5.4.8.18414-enUS-Repack /home/WoW548
+    fi
+    if [ -d "/home/WoW548" ]; then
+        sudo chmod -R 777 /home/WoW548
+    fi
 fi
 if [ -f "/home/$FILENAME" ]; then
     while true; do
@@ -389,11 +393,14 @@ echo "##########################################################"
 echo "## $NUM.Setup Client Tools"
 echo "##########################################################"
 echo ""
+if [ "$DOWNLOAD_SKIPPED" == "true" ]; then
 cp /home/$SETUP_REALM_USER/server/bin/mapextractor /home/WoW548/
 cp /home/$SETUP_REALM_USER/server/bin/vmap4extractor /home/WoW548/
 cp /home/$SETUP_REALM_USER/server/bin/mmaps_generator /home/WoW548/
 cp /home/$SETUP_REALM_USER/server/bin/vmap4assembler /home/WoW548/
 echo "Client tools copied over to /home/WoW548"
+else
+echo "No need to setup client tools as client download disabled."
 fi
 
 
