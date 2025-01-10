@@ -631,7 +631,7 @@ EXTERNAL_IP=$(curl -s -4 http://ifconfig.me/ip)
 mysql --host=$REALM_DB_HOST -h $AUTH_DB_HOST -u $AUTH_DB_USER -p$AUTH_DB_PASS << EOF
 use auth
 DELETE from realmlist where id = $REALM_ID;
-REPLACE INTO realmlist VALUES ('$REALM_ID', '$REALM_NAME', '$EXTERNAL_IP', '$EXTERNAL_IP', '255.255.255.0', '$SETUP_REALM_PORT', '0', '0', '$REALM_ZONE', '$REALM_SECURITY', '0', '18414');
+REPLACE INTO realmlist VALUES ('$REALM_ID', '$REALM_NAME', '$EXTERNAL_IP', '$SETUP_REALM_PORT', '127.0.0.1', '255.255.255.0', '0', '0', '$REALM_ZONE', '$REALM_SECURITY', '0', '18414');
 quit
 EOF
 fi
