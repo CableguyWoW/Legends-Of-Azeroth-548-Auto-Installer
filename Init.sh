@@ -312,7 +312,18 @@ echo "alias rundev='su - \$SETUP_REALM_USER -c \"cd /Legends-Of-Azeroth-548-Auto
 
 echo -e "\n## UPDATE" >> ~/.bashrc
 echo "alias updateall='updateinstaller && updateroot && updateauth && updatedev'" >> ~/.bashrc
-echo "alias updateinstaller='cd / && cp -rf /Legends-Of-Azeroth-548-Auto-Installer/configs/* / && rm -rf /Legends-Of-Azeroth-548-Auto-Installer && apt-get install git sudo -y && git clone https://github.com/CableguyWoW/Legends-Of-Azeroth-548-Auto-Installer /Legends-Of-Azeroth-548-Auto-Installer && if [ -d /Legends-Of-Azeroth-548-Auto-Installer/configs ]; then cp -rf /configs/* /Legends-Of-Azeroth-548-Auto-Installer/configs/; fi && chmod +x /Legends-Of-Azeroth-548-Auto-Installer/Init.sh && /Legends-Of-Azeroth-548-Auto-Installer/Init.sh all'" >> ~/.bashrc
+echo "updateinstaller() {" >> ~/.bashrc
+echo "  cd /" >> ~/.bashrc
+echo "  cp -rf /Legends-Of-Azeroth-548-Auto-Installer/configs /" >> ~/.bashrc
+echo "  rm -rf /Legends-Of-Azeroth-548-Auto-Installer" >> ~/.bashrc
+echo "  apt-get install git sudo -y" >> ~/.bashrc
+echo "  git clone https://github.com/CableguyWoW/Legends-Of-Azeroth-548-Auto-Installer /Legends-Of-Azeroth-548-Auto-Installer" >> ~/.bashrc
+echo "  if [ -d /configs ]; then" >> ~/.bashrc
+echo "    cp -rf /configs/* /Legends-Of-Azeroth-548-Auto-Installer/configs/" >> ~/.bashrc
+echo "  fi" >> ~/.bashrc
+echo "  chmod +x /Legends-Of-Azeroth-548-Auto-Installer/Init.sh" >> ~/.bashrc
+echo "  /Legends-Of-Azeroth-548-Auto-Installer/Init.sh all" >> ~/.bashrc
+echo "}" >> ~/.bashrc
 echo "alias updateroot='cd /Legends-Of-Azeroth-548-Auto-Installer/scripts/Setup/ && ./Root-Install.sh update && cd -'" >> ~/.bashrc
 echo "alias updateauth='su - \$SETUP_AUTH_USER -c \"cd /Legends-Of-Azeroth-548-Auto-Installer/scripts/Setup/ && ./Auth-Install.sh update && cd -\"'" >> ~/.bashrc
 echo "alias updatedev='su - \$SETUP_REALM_USER -c \"cd /Legends-Of-Azeroth-548-Auto-Installer/scripts/Setup/ && ./Realm-Dev-Install.sh update && cd -\"'" >> ~/.bashrc
