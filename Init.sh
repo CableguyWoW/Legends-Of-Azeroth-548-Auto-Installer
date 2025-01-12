@@ -314,7 +314,11 @@ echo -e "\n## UPDATE" >> ~/.bashrc
 echo "alias updateall='updateinstaller && updateroot && updateauth && updatedev'" >> ~/.bashrc
 echo "updateinstaller() {" >> ~/.bashrc
 echo "  cd /" >> ~/.bashrc
-echo "  cp -rf /Legends-Of-Azeroth-548-Auto-Installer/configs /" >> ~/.bashrc
+echo "  if [ -d /Legends-Of-Azeroth-548-Auto-Installer/configs ]; then" >> ~/.bashrc
+echo "    mv -f /Legends-Of-Azeroth-548-Auto-Installer/configs /" >> ~/.bashrc
+echo "  else" >> ~/.bashrc
+echo "    echo 'Configs directory does not exist, skipping move.'" >> ~/.bashrc
+echo "  fi" >> ~/.bashrc
 echo "  rm -rf /Legends-Of-Azeroth-548-Auto-Installer" >> ~/.bashrc
 echo "  apt-get install git sudo -y" >> ~/.bashrc
 echo "  git clone https://github.com/CableguyWoW/Legends-Of-Azeroth-548-Auto-Installer /Legends-Of-Azeroth-548-Auto-Installer" >> ~/.bashrc
