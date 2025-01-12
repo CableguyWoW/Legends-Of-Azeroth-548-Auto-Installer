@@ -131,9 +131,9 @@ if [ -d "/home/$SETUP_AUTH_USER/source" ]; then
                 rm -rf /home/$SETUP_AUTH_USER/source/
                 ## Source install
                 if [ "$REPO_ENABLE_USER" = "true" ]; then
-                    git clone --single-branch --branch $AUTH_BRANCH "https://$REPO_USER:$REPO_USER@$CORE_REPO_URL" source
+                    git clone --single-branch --branch $CORE_BRANCH "https://$REPO_USER:$REPO_USER@$CORE_REPO_URL" source
                 else
-                    git clone --single-branch --branch $AUTH_BRANCH "$CORE_REPO_URL" source
+                    git clone --single-branch --branch $CORE_BRANCH "$CORE_REPO_URL" source
                 fi
                 break
             elif [[ "$file_choice" =~ ^[Nn]$ ]]; then
@@ -146,9 +146,9 @@ if [ -d "/home/$SETUP_AUTH_USER/source" ]; then
 else
     ## Source install
     if [ "$REPO_ENABLE_USER" = "true" ]; then
-        git clone --single-branch --branch $AUTH_BRANCH "https://$REPO_USER:$REPO_USER@$CORE_REPO_URL" source
+        git clone --single-branch --branch $CORE_BRANCH "https://$REPO_USER:$REPO_USER@$CORE_REPO_URL" source
     else
-        git clone --single-branch --branch $AUTH_BRANCH "$CORE_REPO_URL" source
+        git clone --single-branch --branch $CORE_BRANCH "$CORE_REPO_URL" source
     fi
 fi
 if [ -f "/home/$SETUP_AUTH_USER/server/bin/authserver" ]; then

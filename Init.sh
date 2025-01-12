@@ -173,9 +173,9 @@ FOOTER="#### END CUSTOM ALIAS"
 sed -i "/$HEADER/,/$FOOTER/d" ~/.bashrc
 if ! grep -Fxq "$HEADER" ~/.bashrc; then
     echo -e "\n$HEADER\n" >> ~/.bashrc
-    echo "header added"
+    echo "Custom command header added"
 else
-    echo "header present"
+    echo "Custom command header already found."
 fi
 
 # Add new commands between the header and footer
@@ -345,21 +345,21 @@ echo "Added script alias to bashrc"
 
 if ! grep -Fxq "$FOOTER" ~/.bashrc; then
     echo -e "\n$FOOTER\n" >> ~/.bashrc
-    echo "footer added"
+    echo "Script footer added."
 fi
 
 # Source .bashrc to apply changes
-dos2unix ~/.bashrc
-. ~/.bashrc
-source ~/.bashrc
+dos2unix ~/.bashrc > /dev/null 2>&1
+. ~/.bashrc > /dev/null 2>&1
+source ~/.bashrc > /dev/null 2>&1
 
 # Setup Crontab
-crontab -r
+crontab -r > /dev/null 2>&1
 crontab -l | { cat; echo "############## MISC SCRIPTS ##############"; } | crontab -
 crontab -l | { cat; echo "@reboot screen -dmS bashrc /Legends-Of-Azeroth-548-Auto-Installer/scripts/Restarter/bashrc.sh"; } | crontab -
 screen -S bashrc -X quit
 screen -dmS bashrc /Legends-Of-Azeroth-548-Auto-Installer/scripts/Restarter/bashrc.sh
-echo "Root Crontab setup"
+echo "Root Crontab has been setup"
 fi
 
 
