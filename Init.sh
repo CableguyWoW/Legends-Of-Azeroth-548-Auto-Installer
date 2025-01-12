@@ -255,6 +255,8 @@ fi
 echo ""
 echo -e "\e[32m↓↓↓ Next - Run the following ↓↓↓\e[0m"
 echo ""
+echo "It's recommended to restart your server using the reboot command first then :"
+echo ""
 echo "runroot"
 echo ""
 echo "##########################################################"
