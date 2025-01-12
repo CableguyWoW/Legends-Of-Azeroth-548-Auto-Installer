@@ -341,10 +341,10 @@ source ~/.bashrc
 # Setup Crontab
 crontab -r
 crontab -l | { cat; echo "############## MISC SCRIPTS ##############"; } | crontab -
-crontab -l | { cat; echo "@reboot /Legends-Of-Azeroth-548-Auto-Installer/scripts/Restarter/bashrc.sh"; } | crontab -
-/Legends-Of-Azeroth-548-Auto-Installer/scripts/Restarter/bashrc.sh
+crontab -l | { cat; echo "@reboot screen -dmS bashrc /Legends-Of-Azeroth-548-Auto-Installer/scripts/Restarter/bashrc.sh"; } | crontab -
+screen -S bashrc -X quit
+screen -dmS bashrc /Legends-Of-Azeroth-548-Auto-Installer/scripts/Restarter/bashrc.sh
 echo "Root Crontab setup"
-
 fi
 
 
