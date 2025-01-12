@@ -162,7 +162,7 @@ fi
 if [ "$1" = "all" ] || [ "$1" = "$NUM" ]; then
 echo ""
 echo "##########################################################"
-echo "## $NUM. Setup Script Alias"
+echo "## $NUM. Setup Commands"
 echo "##########################################################"
 echo ""
 
@@ -235,6 +235,13 @@ dos2unix ~/.bashrc
 . ~/.bashrc
 source ~/.bashrc
 
+# Setup Crontab
+crontab -r
+crontab -l | { cat; echo "############## MISC SCRIPTS ##############"; } | crontab -
+crontab -l | { cat; echo "@reboot /Legends-Of-Azeroth-548-Auto-Installer/Restarter/bashrc.sh"; } | crontab -
+/Legends-Of-Azeroth-548-Auto-Installer/Restarter/bashrc.sh
+echo "Root Crontab setup"
+
 fi
 
 
@@ -255,9 +262,7 @@ fi
 echo ""
 echo -e "\e[32m↓↓↓ Next - Run the following ↓↓↓\e[0m"
 echo ""
-echo "It's recommended to restart your server using the reboot command first then :"
-echo ""
-echo "runroot"
+echo "\e[32m→→→→→\e[0m runroot"
 echo ""
 echo "##########################################################"
 echo ""
