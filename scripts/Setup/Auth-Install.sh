@@ -127,7 +127,7 @@ if [ -d "/home/$SETUP_AUTH_USER/source" ]; then
     if [ "$1" = "update" ]; then
         rm -rf "/home/$SETUP_AUTH_USER/source"; 
         if [ "$REPO_ENABLE_USER" = "true" ]; then
-            git clone --single-branch --branch $CORE_BRANCH "$REPO_USER:$REPO_USER@$CORE_REPO_URL" source
+            git clone --single-branch --branch $CORE_BRANCH "$REPO_USER:$REPO_PASS@$CORE_REPO_URL" source
         else
             git clone --single-branch --branch $CORE_BRANCH "$CORE_REPO_URL" source
         fi
@@ -139,7 +139,7 @@ if [ -d "/home/$SETUP_AUTH_USER/source" ]; then
                 rm -rf /home/$SETUP_AUTH_USER/source/
                 ## Source install
                 if [ "$REPO_ENABLE_USER" = "true" ]; then
-                    git clone --single-branch --branch $CORE_BRANCH "$REPO_USER:$REPO_USER@$CORE_REPO_URL" source
+                    git clone --single-branch --branch $CORE_BRANCH "$REPO_USER:$REPO_PASS@$CORE_REPO_URL" source
                 else
                     git clone --single-branch --branch $CORE_BRANCH "$CORE_REPO_URL" source
                 fi
@@ -154,7 +154,7 @@ if [ -d "/home/$SETUP_AUTH_USER/source" ]; then
 else
     ## Source install
     if [ "$REPO_ENABLE_USER" = "true" ]; then
-        git clone --single-branch --branch $CORE_BRANCH "$REPO_USER:$REPO_USER@$CORE_REPO_URL" source
+        git clone --single-branch --branch $CORE_BRANCH "$REPO_USER:$REPO_PASS@$CORE_REPO_URL" source
     else
         git clone --single-branch --branch $CORE_BRANCH "$CORE_REPO_URL" source
     fi
