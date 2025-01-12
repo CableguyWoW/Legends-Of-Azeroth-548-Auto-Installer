@@ -194,8 +194,8 @@ echo "alias updateauth='su - \$SETUP_AUTH_USER -c \"cd /Legends-Of-Azeroth-548-A
 echo "alias updatedev='su - \$SETUP_REALM_USER -c \"cd /Legends-Of-Azeroth-548-Auto-Installer/scripts/Setup/ && ./Realm-Dev-Install.sh update && cd -\"'" >> ~/.bashrc
 
 echo -e "\n## SCREEN" >> ~/.bashrc
-echo "alias screenauth='source /Legends-Of-Azeroth-548-Auto-Installer/configs/auth-config && su - \$SETUP_AUTH_USER -c \"screen -r \$SETUP_AUTH_USER\"'" >> ~/.bashrc
-echo "alias screendev='source /Legends-Of-Azeroth-548-Auto-Installer/configs/realm-dev-config && su - \$SETUP_REALM_USER -c \"screen -r \$SETUP_REALM_USER\"'" >> ~/.bashrc
+echo "alias screenauth='source /Legends-Of-Azeroth-548-Auto-Installer/configs/auth-config && su - \$SETUP_AUTH_USER -c \"screen -d -r \$SETUP_AUTH_USER\"'" >> ~/.bashrc
+echo "alias screendev='source /Legends-Of-Azeroth-548-Auto-Installer/configs/realm-dev-config && su - \$SETUP_REALM_USER -c \"screen -d -r \$SETUP_REALM_USER\"'" >> ~/.bashrc
 
 echo -e "\n## START" >> ~/.bashrc
 echo "alias startall='startauth && startdev'" >> ~/.bashrc
