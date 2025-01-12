@@ -43,6 +43,7 @@ echo ""
 ((NUM++)); echo "- [$NUM] : Setup Linux Service"
 ((NUM++)); echo "- [$NUM] : Setup Misc Scripts"
 ((NUM++)); echo "- [$NUM] : Start Worldserver"
+((NUM++)); echo "- [$NUM] : Final Message"
 echo ""
 
 else
@@ -730,9 +731,11 @@ fi
 fi
 
 
+((NUM++))
+if [ "$1" = "all" ] || [ "$1" = "$NUM" ]; then
 echo ""
 echo "##########################################################"
-echo "## DEV REALM INSTALLED AND FINISHED!"
+echo "## $NUM Dev Realm installed and finished!"
 echo "##########################################################"
 echo ""
 echo -e "\e[32m↓↓↓ To access the worldserver - Run the following ↓↓↓\e[0m"
@@ -745,6 +748,7 @@ echo ""
 echo "screenauth"
 echo ""
 echo ""
+fi
 
 fi
 

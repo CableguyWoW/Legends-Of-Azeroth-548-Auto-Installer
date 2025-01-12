@@ -40,6 +40,7 @@ echo ""
 ((NUM++)); echo "- [$NUM] : Setup Restarter"
 ((NUM++)); echo "- [$NUM] : Setup Crontab"
 ((NUM++)); echo "- [$NUM] : Start Authserver"
+((NUM++)); echo "- [$NUM] : Final Message"
 echo ""
 
 else
@@ -276,6 +277,8 @@ echo "Authserver started"
 fi
 
 
+((NUM++))
+if [ "$1" = "all" ] || [ "$1" = "$NUM" ]; then
 echo ""
 echo "##########################################################"
 echo "## AUTH INSTALLED AND FINISHED!"
@@ -289,6 +292,7 @@ echo -e "\e[32m↓↓↓ To Install the Dev Realm - Run the following ↓↓↓\
 echo ""
 echo "rundev"
 echo ""
+fi
 
 fi
 fi

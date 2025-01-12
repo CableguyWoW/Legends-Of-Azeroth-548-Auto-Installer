@@ -30,7 +30,7 @@ echo ""
 ((NUM++)); echo "- [$NUM] : Setup Firewall"
 ((NUM++)); echo "- [$NUM] : Setup Linux Users"
 ((NUM++)); echo "- [$NUM] : Install Fail2Ban"
-((NUM++)); echo "- [$NUM] : Show Command List"
+((NUM++)); echo "- [$NUM] : Final Message"
 echo ""
 echo ""
 
