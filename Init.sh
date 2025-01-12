@@ -221,6 +221,8 @@ fi
 
 # Source .bashrc to apply changes
 . ~/.bashrc
+source ~/.bashrc
+
 fi
 
 
