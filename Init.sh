@@ -212,11 +212,16 @@ echo "alias restartall='restartauth && restartdev'" >> ~/.bashrc
 echo "alias restartauth='stopauth && startauth'" >> ~/.bashrc
 echo "alias restartdev='stopdev && startdev'" >> ~/.bashrc
 
-echo -e "\n## AUTO-RELOAD BASHRC IF MODIFIED" >> ~/.bashrc
-echo 'if [ "$BASH" ] && [ -f "$HOME/.bashrc" ]; then' >> ~/.bashrc
-echo '  alias reloadbashrc="source $HOME/.bashrc" # Manual reload alias' >> ~/.bashrc
-echo '  [[ $- == *i* ]] && [[ "$HOME/.bashrc" -nt "$HOME/.bashrc_last_load" ]] && source $HOME/.bashrc && touch $HOME/.bashrc_last_load' >> ~/.bashrc
-echo 'fi' >> ~/.bashrc
+echo -e "\n## CONFIG" >> ~/.bashrc
+echo "alias configroot='sudo nano /Legends-Of-Azeroth-548-Auto-Installer/configs/root-config'" >> ~/.bashrc
+echo "alias configauth='sudo nano /Legends-Of-Azeroth-548-Auto-Installer/configs/auth-config'" >> ~/.bashrc
+echo "alias configdev='sudo nano /Legends-Of-Azeroth-548-Auto-Installer/configs/realm-dev-config'" >> ~/.bashrc
+
+#echo -e "\n## AUTO-RELOAD BASHRC IF MODIFIED" >> ~/.bashrc
+#echo 'if [ "$BASH" ] && [ -f "$HOME/.bashrc" ]; then' >> ~/.bashrc
+#echo '  alias reloadbashrc="source $HOME/.bashrc" # Manual reload alias' >> ~/.bashrc
+#echo '  [[ $- == *i* ]] && [[ "$HOME/.bashrc" -nt "$HOME/.bashrc_last_load" ]] && source $HOME/.bashrc && touch $HOME/.bashrc_last_load' >> ~/.bashrc
+#echo 'fi' >> ~/.bashrc
 
 echo "Added script alias to bashrc"
 
