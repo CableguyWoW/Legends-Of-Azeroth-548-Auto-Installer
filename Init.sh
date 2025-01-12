@@ -332,8 +332,8 @@ echo "  chmod +x /Legends-Of-Azeroth-548-Auto-Installer/Init.sh" >> ~/.bashrc
 echo "  /Legends-Of-Azeroth-548-Auto-Installer/Init.sh all" >> ~/.bashrc
 echo "}" >> ~/.bashrc
 echo "alias updateroot='cd /Legends-Of-Azeroth-548-Auto-Installer/scripts/Setup/ && ./Root-Install.sh update && cd -'" >> ~/.bashrc
-echo "alias updateauth='su - \$SETUP_AUTH_USER -c \"cd /Legends-Of-Azeroth-548-Auto-Installer/scripts/Setup/ && ./Auth-Install.sh update && cd -\"'" >> ~/.bashrc
-echo "alias updatedev='su - \$SETUP_REALM_USER -c \"cd /Legends-Of-Azeroth-548-Auto-Installer/scripts/Setup/ && ./Realm-Dev-Install.sh update && cd -\"'" >> ~/.bashrc
+echo "alias updateauth='source /Legends-Of-Azeroth-548-Auto-Installer/configs/auth-config && su - \$SETUP_AUTH_USER -c \"cd /Legends-Of-Azeroth-548-Auto-Installer/scripts/Setup/ && ./Auth-Install.sh update && cd -\"'" >> ~/.bashrc
+echo "alias updatedev='source /Legends-Of-Azeroth-548-Auto-Installer/configs/realm-dev-config && su - \$SETUP_REALM_USER -c \"cd /Legends-Of-Azeroth-548-Auto-Installer/scripts/Setup/ && ./Realm-Dev-Install.sh update && cd -\"'" >> ~/.bashrc
 
 echo -e "\n## SCREEN" >> ~/.bashrc
 echo "alias screenauth='source /Legends-Of-Azeroth-548-Auto-Installer/configs/auth-config && su - \$SETUP_AUTH_USER -c \"screen -d -r \$SETUP_AUTH_USER\"'" >> ~/.bashrc
@@ -398,7 +398,7 @@ fi
 echo ""
 echo -e "\e[32m↓↓↓ Next - Run the following ↓↓↓\e[0m"
 echo ""
-echo -e "\e[32m→→→→→\e[0m runroot"
+echo -e "\e[32m→→→→→\e[0m source ~/.bashrc && runroot"
 echo ""
 echo "##########################################################"
 echo ""
