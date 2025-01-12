@@ -314,6 +314,9 @@ echo -e "\n## UPDATE" >> ~/.bashrc
 echo "alias updateall='updateinstaller && updateroot && updateauth && updatedev'" >> ~/.bashrc
 echo "updateinstaller() {" >> ~/.bashrc
 echo "  cd /" >> ~/.bashrc
+echo "  if [ -d /configs ]; then" >> ~/.bashrc
+echo "    rm -rf /configs" >> ~/.bashrc
+echo "  fi" >> ~/.bashrc
 echo "  if [ -d /Legends-Of-Azeroth-548-Auto-Installer/configs ]; then" >> ~/.bashrc
 echo "    mv -f /Legends-Of-Azeroth-548-Auto-Installer/configs /" >> ~/.bashrc
 echo "  else" >> ~/.bashrc
