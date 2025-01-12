@@ -262,7 +262,7 @@ fi
 echo ""
 echo -e "\e[32m↓↓↓ Next - Run the following ↓↓↓\e[0m"
 echo ""
-echo "\e[32m→→→→→\e[0m runroot"
+echo -e "\e[32m→→→→→\e[0m runroot"
 echo ""
 echo "##########################################################"
 echo ""

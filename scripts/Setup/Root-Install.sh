@@ -256,11 +256,11 @@ echo "##########################################################"
 echo ""
 echo -e "\e[32m↓↓↓ For authserver - Run the following ↓↓↓\e[0m"
 echo ""
-echo "\e[32m→→→→→\e[0m runauth"
+echo -e "\e[32m→→→→→\e[0m runauth"
 echo ""
 echo -e "\e[32m↓↓↓ For Dev Realm - Run the following ↓↓↓\e[0m"
 echo ""
-echo "\e[32m→→→→→\e[0m rundev"
+echo -e "\e[32m→→→→→\e[0m rundev"
 echo ""
 fi
 fi
