@@ -210,7 +210,7 @@ echo "alias stopdev='source /Legends-Of-Azeroth-548-Auto-Installer/configs/realm
 echo -e "\n## RESTART" >> ~/.bashrc
 echo "alias restartall='restartauth && restartdev'" >> ~/.bashrc
 echo "alias restartauth='stopauth && startauth'" >> ~/.bashrc
-echo "alias restartdev='stopdev && startdev" >> ~/.bashrc
+echo "alias restartdev='stopdev && startdev'" >> ~/.bashrc
 
 echo "Added script alias to bashrc"
 
