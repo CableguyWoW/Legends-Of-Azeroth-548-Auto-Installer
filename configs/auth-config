@@ -1,5 +1,9 @@
-AUTH_BRANCH="master"
+CORE_BRANCH="master"
 CORE_REPO_URL="https://github.com/Legends-of-Azeroth/Legends-of-Azeroth-Pandaria-5.4.8.git"
+
+REPO_ENABLE_USER="false"
+REPO_USER="user"
+REPO_PASS="pass"
 
 ########## AUTH SETTINGS
 SETUP_AUTH="true"

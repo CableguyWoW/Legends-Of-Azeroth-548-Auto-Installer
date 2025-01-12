@@ -26,6 +26,8 @@ echo ""
 echo "## No option selected, see list below"
 echo ""
 echo "- [all] : Run Full Script"
+echo "- [stop] : Stop Worldserver"
+echo "- [start] : Start Worldserver"
 echo ""
 ((NUM++)); echo "- [$NUM] : Close Worldserver"
 ((NUM++)); echo "- [$NUM] : Setup MySQL Database & Users"
@@ -40,7 +42,6 @@ echo ""
 ((NUM++)); echo "- [$NUM] : Setup Realmlist"
 ((NUM++)); echo "- [$NUM] : Setup Linux Service"
 ((NUM++)); echo "- [$NUM] : Setup Misc Scripts"
-((NUM++)); echo "- [$NUM] : Setup Script Alias"
 ((NUM++)); echo "- [$NUM] : Start Worldserver"
 echo ""
 
@@ -49,14 +50,14 @@ else
 
 NUM=0
 ((NUM++))
-if [ "$1" = "all" ] || [ "$1" = "$NUM" ]; then
+if [ "$1" = "all" ] || [ "$1" = "stop" ] ||  [ "$1" = "$NUM" ]; then
 echo ""
 echo "##########################################################"
 echo "## $NUM.Closing Worldserver"
 echo "##########################################################"
 echo ""
-systemctl stop worldserverd
-killall screen
+sudo systemctl stop worldserverd
+sudo pkill -u "$SETUP_REALM_USER" -f screen
 fi
 
 
@@ -153,12 +154,6 @@ build_source() {
     cd "$SOURCE_DIR/build" || { echo "Failed to change to build directory. Exiting."; exit 1; }
     cmake "$SOURCE_DIR" \
         -DCMAKE_INSTALL_PREFIX="$SERVER_DIR" \
-        -DSCRIPTS_EASTERNKINGDOMS="disabled" \
-        -DSCRIPTS_EVENTS="disabled" \
-        -DSCRIPTS_KALIMDOR="disabled" \
-        -DSCRIPTS_NORTHREND="disabled" \
-        -DSCRIPTS_OUTDOORPVP="disabled" \
-        -DSCRIPTS_OUTLAND="disabled" \
         -DWITH_DYNAMIC_LINKING=ON \
         -DSCRIPTS="dynamic" \
         -DSCRIPTS_CUSTOM="dynamic" \
@@ -177,17 +172,35 @@ mkdir -p "$SERVER_DIR/logs/crashes" "$SERVER_DIR/data"
 
 if [ -d "$SOURCE_DIR" ]; then
     if [ "$1" = "update" ]; then
+        rm -rf "$SOURCE_DIR"; 
+        if [ "$REPO_ENABLE_USER" = "true" ]; then
+            git clone --single-branch --branch $CORE_BRANCH "https://$REPO_USER:$REPO_USER@$CORE_REPO_URL" "$SOURCE_DIR";
+        else
+            git clone --single-branch --branch $CORE_BRANCH "$CORE_REPO_URL" "$SOURCE_DIR";
+        fi
+    else
         while true; do
             read -p "Source already exists. Redownload? (y/n): " file_choice
             case "$file_choice" in
-                [Yy]*) rm -rf "$SOURCE_DIR"; git clone --single-branch --branch "$CORE_BRANCH" "$CORE_REPO_URL" "$SOURCE_DIR"; break ;;
+                [Yy]*) 
+                rm -rf "$SOURCE_DIR"; 
+                if [ "$REPO_ENABLE_USER" = "true" ]; then
+                    git clone --single-branch --branch $CORE_BRANCH "https://$REPO_USER:$REPO_USER@$CORE_REPO_URL" "$SOURCE_DIR";
+                else
+                    git clone --single-branch --branch $CORE_BRANCH "$CORE_REPO_URL" "$SOURCE_DIR";
+                fi
+                break ;;
                 [Nn]*) echo "Skipping download."; break ;;
                 *) echo "Please answer y (yes) or n (no)." ;;
             esac
         done
     fi
 else
-    git clone --single-branch --branch "$CORE_BRANCH" "$CORE_REPO_URL" "$SOURCE_DIR" || { echo "Git clone failed. Exiting."; exit 1; }
+    if [ "$REPO_ENABLE_USER" = "true" ]; then
+        git clone --single-branch --branch $CORE_BRANCH "https://$REPO_USER:$REPO_USER@$CORE_REPO_URL" "$SOURCE_DIR";
+    else
+        git clone --single-branch --branch $CORE_BRANCH "$CORE_REPO_URL" "$SOURCE_DIR";
+    fi
 fi
 
 if [ ! -d "$SOURCE_DIR" ]; then
@@ -215,7 +228,7 @@ fi
 
 
 ((NUM++))
-if [ "$1" = "all" ] || [ "$1" = "$NUM" ]; then
+if [ "$1" = "all" ] || [ "$1" = "update" ] || [ "$1" = "$NUM" ]; then
 echo ""
 echo "##########################################################"
 echo "## $NUM.Setup Config"
@@ -252,7 +265,7 @@ fi
 
 
 ((NUM++))
-if [ "$1" = "all" ] || [ "$1" = "$NUM" ]; then
+if [ "$1" = "all" ] || [ "$1" = "update" ] || [ "$1" = "$NUM" ]; then
 echo ""
 echo "##########################################################"
 echo "## $NUM.Setup Database Data"
@@ -619,7 +632,7 @@ fi
 fi
 
 ((NUM++))
-if [ "$1" = "all" ] || [ "$1" = "$NUM" ]; then
+if [ "$1" = "all" ] || [ "$1" = "update" ] || [ "$1" = "$NUM" ]; then
 echo ""
 echo "##########################################################"
 echo "## $NUM.Update Realmlist"
@@ -700,44 +713,7 @@ fi
 
 
 ((NUM++))
-if [ "$1" = "all" ] || [ "$1" = "$NUM" ]; then
-echo ""
-echo "##########################################################"
-echo "## $NUM. Setup Script Alias"
-echo "##########################################################"
-echo ""
-
-HEADER="#### CUSTOM ALIAS"
-FOOTER="#### END CUSTOM ALIAS"
-
-# Remove content between the header and footer, including the markers
-sed -i "/$HEADER/,/$FOOTER/d" ~/.bashrc
-if ! grep -Fxq "$HEADER" ~/.bashrc; then
-    echo -e "\n$HEADER\n" >> ~/.bashrc
-    echo "header added"
-else
-    echo "header present"
-fi
-
-# Add new commands between the header and footer
-echo -e "\n## COMMANDS" >> ~/.bashrc
-echo "alias commands='cd /Legends-Of-Azeroth-548-Auto-Installer/scripts/Setup/ && ./Realm-Dev-Install.sh && cd -'" >> ~/.bashrc
-echo -e "\n## UPDATE" >> ~/.bashrc
-echo "alias update='cd /Legends-Of-Azeroth-548-Auto-Installer/scripts/Setup/ && ./Realm-Dev-Install.sh update && cd -'" >> ~/.bashrc
-echo "Added script alias to bashrc"
-
-if ! grep -Fxq "$FOOTER" ~/.bashrc; then
-    echo -e "\n$FOOTER\n" >> ~/.bashrc
-    echo "footer added"
-fi
-
-# Source .bashrc to apply changes
-. ~/.bashrc
-fi
-
-
-((NUM++))
-if [ "$1" = "all" ] || [ "$1" = "$NUM" ]; then
+if [ "$1" = "all" ] || [ "$1" = "start" ] ||  [ "$1" = "$NUM" ]; then
 echo ""
 echo "##########################################################"
 echo "## $NUM.Start Server"
@@ -761,15 +737,13 @@ echo "##########################################################"
 echo ""
 echo -e "\e[32m↓↓↓ To access the worldserver - Run the following ↓↓↓\e[0m"
 echo ""
-echo "su - $SETUP_REALM_USER -c 'screen -r $SETUP_REALM_USER'"
+echo "screendev"
 echo ""
-echo "TIP - To exit the screen press ALT + A + D"
 echo ""
 echo -e "\e[32m↓↓↓ To access the authserver - Run the following ↓↓↓\e[0m"
 echo ""
-echo "su - $SETUP_AUTH_USER -c 'screen -r $SETUP_AUTH_USER'"
+echo "screenauth"
 echo ""
-echo "TIP - To exit the screen press ALT + A + D"
 echo ""
 
 fi

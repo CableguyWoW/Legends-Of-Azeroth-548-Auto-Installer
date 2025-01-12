@@ -27,6 +27,7 @@ echo ""
 ((NUM++)); echo "- [$NUM] : Install Mysql Apt"
 ((NUM++)); echo "- [$NUM] : Randomize Passwords"
 ((NUM++)); echo "- [$NUM] : Setup Commands"
+((NUM++)); echo "- [$NUM] : Final Message"
 echo ""
 
 else
@@ -161,7 +162,73 @@ fi
 if [ "$1" = "all" ] || [ "$1" = "$NUM" ]; then
 echo ""
 echo "##########################################################"
-echo "## $NUM.Setup Commands"
+echo "## $NUM. Setup Script Alias"
+echo "##########################################################"
+echo ""
+
+HEADER="#### CUSTOM ALIAS"
+FOOTER="#### END CUSTOM ALIAS"
+
+# Remove content between the header and footer, including the markers
+sed -i "/$HEADER/,/$FOOTER/d" ~/.bashrc
+if ! grep -Fxq "$HEADER" ~/.bashrc; then
+    echo -e "\n$HEADER\n" >> ~/.bashrc
+    echo "header added"
+else
+    echo "header present"
+fi
+
+# Add new commands between the header and footer
+echo -e "\n## RUN" >> ~/.bashrc
+echo "alias runall='runinit && runroot && runauth && rundev'" >> ~/.bashrc
+echo "alias runinit='cd /Legends-Of-Azeroth-548-Auto-Installer/ && ./Init.sh all && cd -'" >> ~/.bashrc
+echo "alias runroot='cd /Legends-Of-Azeroth-548-Auto-Installer/scripts/Setup/ && ./Root-Install.sh all && cd -'" >> ~/.bashrc
+echo "alias runauth='su - \$SETUP_AUTH_USER -c \"cd /Legends-Of-Azeroth-548-Auto-Installer/scripts/Setup/ && ./Auth-Install.sh all && cd -\"'" >> ~/.bashrc
+echo "alias rundev='su - \$SETUP_REALM_USER -c \"cd /Legends-Of-Azeroth-548-Auto-Installer/scripts/Setup/ && ./Realm-Dev-Install.sh all && cd -\"'" >> ~/.bashrc
+
+echo -e "\n## UPDATE" >> ~/.bashrc
+echo "alias updateall='updateinstaller && updateroot && updateauth && updatedev'" >> ~/.bashrc
+echo "alias updateinstaller='cd /Legends-Of-Azeroth-548-Auto-Installer/scripts/Setup/ && ./Root-Install.sh update && cd -'" >> ~/.bashrc
+echo "alias updateroot='cd /Legends-Of-Azeroth-548-Auto-Installer/scripts/Setup/ && ./Root-Install.sh update && cd -'" >> ~/.bashrc
+echo "alias updateauth='su - \$SETUP_AUTH_USER -c \"cd /Legends-Of-Azeroth-548-Auto-Installer/scripts/Setup/ && ./Auth-Install.sh update && cd -\"'" >> ~/.bashrc
+echo "alias updatedev='su - \$SETUP_REALM_USER -c \"cd /Legends-Of-Azeroth-548-Auto-Installer/scripts/Setup/ && ./Realm-Dev-Install.sh update && cd -\"'" >> ~/.bashrc
+
+echo -e "\n## SCREEN" >> ~/.bashrc
+echo "alias screenauth='source /Legends-Of-Azeroth-548-Auto-Installer/configs/auth-config && su - \$SETUP_AUTH_USER -c \"screen -r \$SETUP_AUTH_USER\"'" >> ~/.bashrc
+echo "alias screendev='source /Legends-Of-Azeroth-548-Auto-Installer/configs/realm-dev-config && su - \$SETUP_REALM_USER -c \"screen -r \$SETUP_REALM_USER\"'" >> ~/.bashrc
+
+echo -e "\n## START" >> ~/.bashrc
+echo "alias startall='startauth && startdev'" >> ~/.bashrc
+echo "alias startauth='su - \$SETUP_AUTH_USER -c \"cd /Legends-Of-Azeroth-548-Auto-Installer/scripts/Setup/ && ./Auth-Install.sh start && cd -\"'" >> ~/.bashrc
+echo "alias startdev='su - \$SETUP_REALM_USER -c \"cd /Legends-Of-Azeroth-548-Auto-Installer/scripts/Setup/ && ./Realm-Dev-Install.sh start && cd -\"'" >> ~/.bashrc
+
+echo -e "\n## STOP" >> ~/.bashrc
+echo "alias stopall='stopauth && stopdev'" >> ~/.bashrc
+echo "alias stopauth='source /Legends-Of-Azeroth-548-Auto-Installer/configs/auth-config && su - \$SETUP_AUTH_USER -c \"cd /Legends-Of-Azeroth-548-Auto-Installer/scripts/Setup/ && ./Auth-Install.sh stop && cd -\"'" >> ~/.bashrc
+echo "alias stopdev='source /Legends-Of-Azeroth-548-Auto-Installer/configs/realm-dev-config && su - \$SETUP_REALM_USER -c \"cd /Legends-Of-Azeroth-548-Auto-Installer/scripts/Setup/ && ./Realm-Dev-Install.sh stop && cd -\"'" >> ~/.bashrc
+
+echo -e "\n## RESTART" >> ~/.bashrc
+echo "alias restartall='restartauth && restartdev'" >> ~/.bashrc
+echo "alias restartauth='stopauth && startauth'" >> ~/.bashrc
+echo "alias restartdev='stopdev && startdev" >> ~/.bashrc
+
+echo "Added script alias to bashrc"
+
+if ! grep -Fxq "$FOOTER" ~/.bashrc; then
+    echo -e "\n$FOOTER\n" >> ~/.bashrc
+    echo "footer added"
+fi
+
+# Source .bashrc to apply changes
+. ~/.bashrc
+fi
+
+
+((NUM++))
+if [ "$1" = "all" ] || [ "$1" = "$NUM" ]; then
+echo ""
+echo "##########################################################"
+echo "## $NUM.Final Message"
 echo "##########################################################"
 echo ""
 echo "All passwords are stored in - /Legends-Of-Azeroth-548-Auto-Installer/configs/"
@@ -174,7 +241,7 @@ fi
 echo ""
 echo -e "\e[32m↓↓↓ Next - Run the following ↓↓↓\e[0m"
 echo ""
-echo "cd /Legends-Of-Azeroth-548-Auto-Installer/scripts/Setup/ && ./Root-Install.sh all"
+echo "runroot"
 echo ""
 echo "##########################################################"
 echo ""

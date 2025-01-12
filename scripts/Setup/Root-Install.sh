@@ -248,7 +248,7 @@ fi
 
 
 ((NUM++))
-if [ "$1" = "all" ] || [ "$1" = "7" ]; then
+if [ "$1" = "all" ] || [ "$1" = "$NUM" ]; then
 echo ""
 echo "##########################################################"
 echo "## $NUM.Root install script finished"
@@ -256,11 +256,11 @@ echo "##########################################################"
 echo ""
 echo -e "\e[32m↓↓↓ For authserver - Run the following ↓↓↓\e[0m"
 echo ""
-echo "su - $SETUP_AUTH_USER -c 'cd /Legends-Of-Azeroth-548-Auto-Installer/scripts/Setup/ && ./Auth-Install.sh all'"
+echo "runauth"
 echo ""
 echo -e "\e[32m↓↓↓ For Dev Realm - Run the following ↓↓↓\e[0m"
 echo ""
-echo "su - $SETUP_REALM_USER -c 'cd /Legends-Of-Azeroth-548-Auto-Installer/scripts/Setup/ && ./Realm-Dev-Install.sh all'"
+echo "rundev"
 echo ""
 fi
 fi

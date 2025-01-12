@@ -3,6 +3,10 @@ CORE_REPO_URL="https://github.com/Legends-of-Azeroth/Legends-of-Azeroth-Pandaria
 DB_REPO_URL="https://github.com/Legends-of-Azeroth/Legends-of-Azeroth-Pandaria-5.4.8/releases/download/WDB20231230/world_548_20240722.7z"
 CLIENT_URL="https://cdn.wowlibrary.com/clients/MOP-5.4.8.18414-enUS-Repack-v4.zip"
 
+REPO_ENABLE_USER="false"
+REPO_USER="user"
+REPO_PASS="pass"
+
 ########## REALM SETTINGS
 REALM_NAME="Dev Realm"
 REALM_ID="1"

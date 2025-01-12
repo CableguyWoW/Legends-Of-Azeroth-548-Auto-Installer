@@ -29,6 +29,8 @@ echo "## No option selected, see list below"
 echo ""
 echo "- [all] : Run Full Script"
 echo "- [update] : Update Source and DB"
+echo "- [stop] : Stop Authserver"
+echo "- [start] : Start Authserver"
 echo ""
 ((NUM++)); echo "- [$NUM] : Close Authserver"
 ((NUM++)); echo "- [$NUM] : Setup MySQL Database & Users"
@@ -37,7 +39,6 @@ echo ""
 ((NUM++)); echo "- [$NUM] : Setup Database Data"
 ((NUM++)); echo "- [$NUM] : Setup Restarter"
 ((NUM++)); echo "- [$NUM] : Setup Crontab"
-((NUM++)); echo "- [$NUM] : Setup Alias"
 ((NUM++)); echo "- [$NUM] : Start Authserver"
 echo ""
 
@@ -46,14 +47,14 @@ else
 
 NUM=0
 ((NUM++))
-if [ "$1" = "all" ] || [ "$1" = "update" ] || [ "$1" = "$NUM" ]; then
+if [ "$1" = "all" ] || [ "$1" = "stop" ] || [ "$1" = "$NUM" ]; then
 echo ""
 echo "##########################################################"
 echo "## $NUM.Closing Authserver"
 echo "##########################################################"
 echo ""
-sudo killall screen
-systemctl stop authserverd
+sudo systemctl stop authserverd
+sudo pkill -u "$SETUP_AUTH_USER" -f screen
 fi
 
 
@@ -128,7 +129,11 @@ if [ -d "/home/$SETUP_AUTH_USER/source" ]; then
             if [[ "$file_choice" =~ ^[Yy]$ ]]; then
                 rm -rf /home/$SETUP_AUTH_USER/source/
                 ## Source install
-                git clone --single-branch --branch $AUTH_BRANCH "$CORE_REPO_URL" source
+                if [ "$REPO_ENABLE_USER" = "true" ]; then
+                    git clone --single-branch --branch $AUTH_BRANCH "https://$REPO_USER:$REPO_USER@$CORE_REPO_URL" source
+                else
+                    git clone --single-branch --branch $AUTH_BRANCH "$CORE_REPO_URL" source
+                fi
                 break
             elif [[ "$file_choice" =~ ^[Nn]$ ]]; then
                 echo "Skipping download." && break
@@ -139,7 +144,11 @@ if [ -d "/home/$SETUP_AUTH_USER/source" ]; then
     fi
 else
     ## Source install
-    git clone --single-branch --branch $AUTH_BRANCH "$CORE_REPO_URL" source
+    if [ "$REPO_ENABLE_USER" = "true" ]; then
+        git clone --single-branch --branch $AUTH_BRANCH "https://$REPO_USER:$REPO_USER@$CORE_REPO_URL" source
+    else
+        git clone --single-branch --branch $AUTH_BRANCH "$CORE_REPO_URL" source
+    fi
 fi
 if [ -f "/home/$SETUP_AUTH_USER/server/bin/authserver" ]; then
     if [ "$1" != "update" ]; then
@@ -189,7 +198,7 @@ fi
 
 
 ((NUM++))
-if [ "$1" = "all" ] || [ "$1" = "$NUM" ]; then
+if [ "$1" = "all" ] || [ "$1" = "update" ] || [ "$1" = "$NUM" ]; then
 echo ""
 echo "##########################################################"
 echo "## $NUM.Setup Config"
@@ -215,7 +224,7 @@ fi
 
 
 ((NUM++))
-if [ "$1" = "all" ] || [ "$1" = "$NUM" ]; then
+if [ "$1" = "all" ] || [ "$1" = "update" ] || [ "$1" = "$NUM" ]; then
 echo ""
 echo "##########################################################"
 echo "## $NUM.Setup Database Data"
@@ -235,7 +244,7 @@ fi
 
 
 ((NUM++))
-if [ "$1" = "all" ] || [ "$1" = "5" ]; then
+if [ "$1" = "all" ] || [ "$1" = "$NUM" ]; then
 echo ""
 echo "##########################################################"
 echo "## $NUM.Setup Restarter"
@@ -256,48 +265,7 @@ fi
 
 
 ((NUM++))
-if [ "$1" = "all" ] || [ "$1" = "$NUM" ]; then
-echo ""
-echo "##########################################################"
-echo "## $NUM. Setup Script Alias"
-echo "##########################################################"
-echo ""
-
-HEADER="#### CUSTOM ALIAS"
-FOOTER="#### END CUSTOM ALIAS"
-
-# Remove content between the header and footer, including the markers
-sed -i "/$HEADER/,/$FOOTER/d" ~/.bashrc
-
-# Add header and footer if they are not present
-if ! grep -Fxq "$HEADER" ~/.bashrc; then
-    echo -e "\n$HEADER\n" >> ~/.bashrc
-    echo "header added"
-else
-    echo "header present"
-fi
-
-# Add new commands between the header and footer
-echo -e "\n## COMMANDS" >> ~/.bashrc
-echo "alias commands='cd /Legends-Of-Azeroth-548-Auto-Installer/scripts/Setup/ && ./Auth-Install.sh && cd -'" >> ~/.bashrc
-
-echo -e "\n## UPDATE" >> ~/.bashrc
-echo "alias update='cd /Legends-Of-Azeroth-548-Auto-Installer/scripts/Setup/ && ./Auth-Install.sh update && cd -'" >> ~/.bashrc
-
-if ! grep -Fxq "$FOOTER" ~/.bashrc; then
-    echo -e "\n$FOOTER\n" >> ~/.bashrc
-    echo "footer added"
-fi
-
-echo "Added script alias to bashrc"
-
-# Source .bashrc to apply changes
-. ~/.bashrc
-fi
-
-
-((NUM++))
-if [ "$1" = "all" ] || [ "$1" = "update" ] || [ "$1" = "$NUM" ]; then
+if [ "$1" = "all" ] || [ "$1" = "start" ] ||  [ "$1" = "$NUM" ]; then
 echo ""
 echo "##########################################################"
 echo "## $NUM.Starting Authserver"
@@ -315,13 +283,11 @@ echo "##########################################################"
 echo ""
 echo -e "\e[32m↓↓↓ To access the authserver - Run the following ↓↓↓\e[0m"
 echo ""
-echo "su - $SETUP_AUTH_USER -c 'screen -r auth'"
-echo ""
-echo "TIP - To exit the screen press ALT + A + D"
+echo "screenauth"
 echo ""
 echo -e "\e[32m↓↓↓ To Install the Dev Realm - Run the following ↓↓↓\e[0m"
 echo ""
-echo "su - $SETUP_REALM_USER -c 'cd /Legends-Of-Azeroth-548-Auto-Installer/scripts/Setup/ && ./Realm-Dev-Install.sh all'"
+echo "rundev"
 echo ""
 
 fi
