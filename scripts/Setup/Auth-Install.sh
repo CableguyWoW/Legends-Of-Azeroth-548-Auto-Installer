@@ -123,11 +123,14 @@ cd /home/$SETUP_AUTH_USER/
 mkdir /home/$SETUP_AUTH_USER/
 mkdir /home/$SETUP_AUTH_USER/server/
 mkdir /home/$SETUP_AUTH_USER/logs/
+
+CORE_REPO_URL_NO_HTTPS="${CORE_REPO_URL#https://}"
+
 if [ -d "/home/$SETUP_AUTH_USER/source" ]; then
     if [ "$1" = "update" ]; then
         rm -rf "/home/$SETUP_AUTH_USER/source"; 
         if [ "$REPO_ENABLE_USER" = "true" ]; then
-            git clone --single-branch --branch $CORE_BRANCH "$REPO_USER:$REPO_PASS@$CORE_REPO_URL" source
+            git clone --single-branch --branch $CORE_BRANCH "https://$REPO_USER:$REPO_PASS@$CORE_REPO_URL_NO_HTTPS" source
         else
             git clone --single-branch --branch $CORE_BRANCH "$CORE_REPO_URL" source
         fi
@@ -139,7 +142,7 @@ if [ -d "/home/$SETUP_AUTH_USER/source" ]; then
                 rm -rf /home/$SETUP_AUTH_USER/source/
                 ## Source install
                 if [ "$REPO_ENABLE_USER" = "true" ]; then
-                    git clone --single-branch --branch $CORE_BRANCH "$REPO_USER:$REPO_PASS@$CORE_REPO_URL" source
+                    git clone --single-branch --branch $CORE_BRANCH "https://$REPO_USER:$REPO_PASS@$CORE_REPO_URL_NO_HTTPS" source
                 else
                     git clone --single-branch --branch $CORE_BRANCH "$CORE_REPO_URL" source
                 fi
@@ -154,14 +157,14 @@ if [ -d "/home/$SETUP_AUTH_USER/source" ]; then
 else
     ## Source install
     if [ "$REPO_ENABLE_USER" = "true" ]; then
-        git clone --single-branch --branch $CORE_BRANCH "$REPO_USER:$REPO_PASS@$CORE_REPO_URL" source
+        git clone --single-branch --branch $CORE_BRANCH "https://$REPO_USER:$REPO_PASS@$CORE_REPO_URL_NO_HTTPS" source
     else
         git clone --single-branch --branch $CORE_BRANCH "$CORE_REPO_URL" source
     fi
 fi
 if [ ! -d "/home/$SETUP_AUTH_USER/source/" ]; then
     echo "Source not found.... exiting..."
-    exit 1
+    exit 12
 fi
 if [ -f "/home/$SETUP_AUTH_USER/server/bin/authserver" ]; then
     if [ "$1" != "update" ]; then

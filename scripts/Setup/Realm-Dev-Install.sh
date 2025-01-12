@@ -170,12 +170,13 @@ build_source() {
 }
 
 mkdir -p "$SERVER_DIR/logs/crashes" "$SERVER_DIR/data"
+CORE_REPO_URL_NO_HTTPS="${CORE_REPO_URL#https://}"
 
 if [ -d "$SOURCE_DIR" ]; then
     if [ "$1" = "update" ]; then
         rm -rf "$SOURCE_DIR"; 
         if [ "$REPO_ENABLE_USER" = "true" ]; then
-            git clone --single-branch --branch $CORE_BRANCH "$REPO_USER:$REPO_PASS@$CORE_REPO_URL" "$SOURCE_DIR";
+            git clone --single-branch --branch $CORE_BRANCH "https://$REPO_USER:$REPO_PASS@$CORE_REPO_URL_NO_HTTPS" "$SOURCE_DIR";
         else
             git clone --single-branch --branch $CORE_BRANCH "$CORE_REPO_URL" "$SOURCE_DIR";
         fi
@@ -186,7 +187,7 @@ if [ -d "$SOURCE_DIR" ]; then
                 [Yy]*) 
                 rm -rf "$SOURCE_DIR"; 
                 if [ "$REPO_ENABLE_USER" = "true" ]; then
-                    git clone --single-branch --branch $CORE_BRANCH "$REPO_USER:$REPO_PASS@$CORE_REPO_URL" "$SOURCE_DIR";
+                    git clone --single-branch --branch $CORE_BRANCH "https://$REPO_USER:$REPO_PASS@$CORE_REPO_URL_NO_HTTPS" "$SOURCE_DIR";
                 else
                     git clone --single-branch --branch $CORE_BRANCH "$CORE_REPO_URL" "$SOURCE_DIR";
                 fi
@@ -198,7 +199,7 @@ if [ -d "$SOURCE_DIR" ]; then
     fi
 else
     if [ "$REPO_ENABLE_USER" = "true" ]; then
-        git clone --single-branch --branch $CORE_BRANCH "$REPO_PASS:$REPO_USER@$CORE_REPO_URL" "$SOURCE_DIR";
+        git clone --single-branch --branch $CORE_BRANCH "https://$REPO_USER:$REPO_PASS@$CORE_REPO_URL_NO_HTTPS" "$SOURCE_DIR";
     else
         git clone --single-branch --branch $CORE_BRANCH "$CORE_REPO_URL" "$SOURCE_DIR";
     fi
