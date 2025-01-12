@@ -212,6 +212,12 @@ echo "alias restartall='restartauth && restartdev'" >> ~/.bashrc
 echo "alias restartauth='stopauth && startauth'" >> ~/.bashrc
 echo "alias restartdev='stopdev && startdev'" >> ~/.bashrc
 
+echo -e "\n## AUTO-RELOAD BASHRC IF MODIFIED" >> ~/.bashrc
+echo 'if [ "$BASH" ] && [ -f ~/.bashrc ]; then' >> ~/.bashrc
+echo '  alias reloadbashrc="source ~/.bashrc" # Manual reload alias' >> ~/.bashrc
+echo '  [[ $- == *i* ]] && [[ ~/.bashrc -nt ~/.bashrc_last_load ]] && source ~/.bashrc && touch ~/.bashrc_last_load' >> ~/.bashrc
+echo 'fi' >> ~/.bashrc
+
 echo "Added script alias to bashrc"
 
 if ! grep -Fxq "$FOOTER" ~/.bashrc; then
