@@ -226,7 +226,7 @@ if ! grep -Fxq "$FOOTER" ~/.bashrc; then
 fi
 
 # Source .bashrc to apply changes
-dos2linux ~/.bashrc
+dos2unix ~/.bashrc
 . ~/.bashrc
 source ~/.bashrc
 
