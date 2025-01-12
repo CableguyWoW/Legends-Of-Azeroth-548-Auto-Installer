@@ -179,6 +179,115 @@ else
 fi
 
 # Add new commands between the header and footer
+echo -e "\n## CUSTOM COMMANDS LIST" >> ~/.bashrc
+
+# Function to list all available commands
+echo "commands() {" >> ~/.bashrc
+echo "  echo -e '\n## Run Commands'" >> ~/.bashrc
+echo "  echo -e 'runall: Run all installation steps'" >> ~/.bashrc
+echo "  echo -e 'runinit: Run the initial installation script'" >> ~/.bashrc
+echo "  echo -e 'runroot: Run the root installation script'" >> ~/.bashrc
+echo "  echo -e 'runauth: Run the authentication installation script'" >> ~/.bashrc
+echo "  echo -e 'rundev: Run the realm development installation script'" >> ~/.bashrc
+echo "  echo -e '-------------------------------------------------------'" >> ~/.bashrc
+echo "  echo -e '\n## Update Commands'" >> ~/.bashrc
+echo "  echo -e 'updateall: Update all components'" >> ~/.bashrc
+echo "  echo -e 'updateinstaller: Update the Legends installer'" >> ~/.bashrc
+echo "  echo -e 'updateroot: Update the root installation'" >> ~/.bashrc
+echo "  echo -e 'updateauth: Update the authentication installation'" >> ~/.bashrc
+echo "  echo -e 'updatedev: Update the realm development installation'" >> ~/.bashrc
+echo "  echo -e '-------------------------------------------------------'" >> ~/.bashrc
+echo "  echo -e '\n## Screen Commands'" >> ~/.bashrc
+echo "  echo -e 'screenauth: Attach to the authentication screen session'" >> ~/.bashrc
+echo "  echo -e 'screendev: Attach to the realm development screen session'" >> ~/.bashrc
+echo "  echo -e '-------------------------------------------------------'" >> ~/.bashrc
+echo "  echo -e '\n## Start Commands'" >> ~/.bashrc
+echo "  echo -e 'startall: Start all services'" >> ~/.bashrc
+echo "  echo -e 'startauth: Start the authentication service'" >> ~/.bashrc
+echo "  echo -e 'startdev: Start the realm development service'" >> ~/.bashrc
+echo "  echo -e '-------------------------------------------------------'" >> ~/.bashrc
+echo "  echo -e '\n## Stop Commands'" >> ~/.bashrc
+echo "  echo -e 'stopall: Stop all services'" >> ~/.bashrc
+echo "  echo -e 'stopauth: Stop the authentication service'" >> ~/.bashrc
+echo "  echo -e 'stopdev: Stop the realm development service'" >> ~/.bashrc
+echo "  echo -e '-------------------------------------------------------'" >> ~/.bashrc
+echo "  echo -e '\n## Restart Commands'" >> ~/.bashrc
+echo "  echo -e 'restartall: Restart all services'" >> ~/.bashrc
+echo "  echo -e 'restartauth: Restart the authentication service'" >> ~/.bashrc
+echo "  echo -e 'restartdev: Restart the realm development service'" >> ~/.bashrc
+echo "  echo -e '-------------------------------------------------------'" >> ~/.bashrc
+echo "  echo -e '\n## Config Commands'" >> ~/.bashrc
+echo "  echo -e 'configroot: Edit the root configuration'" >> ~/.bashrc
+echo "  echo -e 'configauth: Edit the authentication configuration'" >> ~/.bashrc
+echo "  echo -e 'configdev: Edit the realm development configuration'" >> ~/.bashrc
+echo "}" >> ~/.bashrc
+
+# Function to list all run-related commands
+echo "commandsrun() {" >> ~/.bashrc
+echo "  echo -e '\n## Run Commands'" >> ~/.bashrc
+echo "  echo -e 'runall: Run all installation steps'" >> ~/.bashrc
+echo "  echo -e 'runinit: Run the initial installation script'" >> ~/.bashrc
+echo "  echo -e 'runroot: Run the root installation script'" >> ~/.bashrc
+echo "  echo -e 'runauth: Run the authentication installation script'" >> ~/.bashrc
+echo "  echo -e 'rundev: Run the realm development installation script'" >> ~/.bashrc
+echo "  echo -e '-------------------------------------------------------'" >> ~/.bashrc
+echo "}" >> ~/.bashrc
+
+# Function to list all update-related commands
+echo "commandsupdate() {" >> ~/.bashrc
+echo "  echo -e '\n## Update Commands'" >> ~/.bashrc
+echo "  echo -e 'updateall: Update all components'" >> ~/.bashrc
+echo "  echo -e 'updateinstaller: Update the Legends installer'" >> ~/.bashrc
+echo "  echo -e 'updateroot: Update the root installation'" >> ~/.bashrc
+echo "  echo -e 'updateauth: Update the authentication installation'" >> ~/.bashrc
+echo "  echo -e 'updatedev: Update the realm development installation'" >> ~/.bashrc
+echo "  echo -e '-------------------------------------------------------'" >> ~/.bashrc
+echo "}" >> ~/.bashrc
+
+# Function to list all screen-related commands
+echo "commandscreen() {" >> ~/.bashrc
+echo "  echo -e '\n## Screen Commands'" >> ~/.bashrc
+echo "  echo -e 'screenauth: Attach to the authentication screen session'" >> ~/.bashrc
+echo "  echo -e 'screendev: Attach to the realm development screen session'" >> ~/.bashrc
+echo "  echo -e '-------------------------------------------------------'" >> ~/.bashrc
+echo "}" >> ~/.bashrc
+
+# Function to list all start-related commands
+echo "commandsstart() {" >> ~/.bashrc
+echo "  echo -e '\n## Start Commands'" >> ~/.bashrc
+echo "  echo -e 'startall: Start all services'" >> ~/.bashrc
+echo "  echo -e 'startauth: Start the authentication service'" >> ~/.bashrc
+echo "  echo -e 'startdev: Start the realm development service'" >> ~/.bashrc
+echo "  echo -e '-------------------------------------------------------'" >> ~/.bashrc
+echo "}" >> ~/.bashrc
+
+# Function to list all stop-related commands
+echo "commandsstop() {" >> ~/.bashrc
+echo "  echo -e '\n## Stop Commands'" >> ~/.bashrc
+echo "  echo -e 'stopall: Stop all services'" >> ~/.bashrc
+echo "  echo -e 'stopauth: Stop the authentication service'" >> ~/.bashrc
+echo "  echo -e 'stopdev: Stop the realm development service'" >> ~/.bashrc
+echo "  echo -e '-------------------------------------------------------'" >> ~/.bashrc
+echo "}" >> ~/.bashrc
+
+# Function to list all restart-related commands
+echo "commandsrestart() {" >> ~/.bashrc
+echo "  echo -e '\n## Restart Commands'" >> ~/.bashrc
+echo "  echo -e 'restartall: Restart all services'" >> ~/.bashrc
+echo "  echo -e 'restartauth: Restart the authentication service'" >> ~/.bashrc
+echo "  echo -e 'restartdev: Restart the realm development service'" >> ~/.bashrc
+echo "  echo -e '-------------------------------------------------------'" >> ~/.bashrc
+echo "}" >> ~/.bashrc
+
+# Function to list all config-related commands
+echo "commandsconfig() {" >> ~/.bashrc
+echo "  echo -e '\n## Config Commands'" >> ~/.bashrc
+echo "  echo -e 'configroot: Edit the root configuration'" >> ~/.bashrc
+echo "  echo -e 'configauth: Edit the authentication configuration'" >> ~/.bashrc
+echo "  echo -e 'configdev: Edit the realm development configuration'" >> ~/.bashrc
+echo "  echo -e '-------------------------------------------------------'" >> ~/.bashrc
+echo "}" >> ~/.bashrc
+
 echo -e "\n## RUN" >> ~/.bashrc
 echo "alias runall='runinit && runroot && runauth && rundev'" >> ~/.bashrc
 echo "alias runinit='cd /Legends-Of-Azeroth-548-Auto-Installer/ && ./Init.sh all && cd -'" >> ~/.bashrc
@@ -216,12 +325,6 @@ echo -e "\n## CONFIG" >> ~/.bashrc
 echo "alias configroot='sudo nano /Legends-Of-Azeroth-548-Auto-Installer/configs/root-config'" >> ~/.bashrc
 echo "alias configauth='sudo nano /Legends-Of-Azeroth-548-Auto-Installer/configs/auth-config'" >> ~/.bashrc
 echo "alias configdev='sudo nano /Legends-Of-Azeroth-548-Auto-Installer/configs/realm-dev-config'" >> ~/.bashrc
-
-#echo -e "\n## AUTO-RELOAD BASHRC IF MODIFIED" >> ~/.bashrc
-#echo 'if [ "$BASH" ] && [ -f "$HOME/.bashrc" ]; then' >> ~/.bashrc
-#echo '  alias reloadbashrc="source $HOME/.bashrc" # Manual reload alias' >> ~/.bashrc
-#echo '  [[ $- == *i* ]] && [[ "$HOME/.bashrc" -nt "$HOME/.bashrc_last_load" ]] && source $HOME/.bashrc && touch $HOME/.bashrc_last_load' >> ~/.bashrc
-#echo 'fi' >> ~/.bashrc
 
 echo "Added script alias to bashrc"
 
