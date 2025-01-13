@@ -174,12 +174,9 @@ CORE_REPO_URL_NO_HTTPS="${CORE_REPO_URL#https://}"
 
 if [ -d "$SOURCE_DIR" ]; then
     if [ "$1" = "update" ]; then
-        rm -rf "$SOURCE_DIR"; 
-        if [ "$REPO_ENABLE_USER" = "true" ]; then
-            git clone --single-branch --branch $CORE_BRANCH "https://$REPO_USER:$REPO_PASS@$CORE_REPO_URL_NO_HTTPS" "$SOURCE_DIR";
-        else
-            git clone --single-branch --branch $CORE_BRANCH "$CORE_REPO_URL" "$SOURCE_DIR";
-        fi
+        cd /home/$SETUP_REALM_USER/source || exit 1
+        git reset --hard
+        git pull https://$REPO_USER:$REPO_PASS@$CORE_REPO_URL_NO_HTTPS $CORE_BRANCH
     else
         while true; do
             read -p "Source already exists. Redownload? (y/n): " file_choice
