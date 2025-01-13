@@ -60,7 +60,7 @@ fi
 
 
 ((NUM++))
-if [ "$1" = "all" ] || [ "$1" = "$NUM" ]; then
+if [ "$1" = "all" ] || [ "$1" = "update" ] || [ "$1" = "$NUM" ]; then
 echo ""
 echo "##########################################################"
 echo "## $NUM.Setup MySQL Database & Users"
