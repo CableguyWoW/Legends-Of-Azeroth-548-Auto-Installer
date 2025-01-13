@@ -150,7 +150,9 @@ SOURCE_DIR="$SETUP_DIR/source"
 build_source() {
     echo "Building Source"
     cd "$SOURCE_DIR" || { echo "Failed to change directory to source. Exiting."; exit 1; }
-    rm -rf "$SOURCE_DIR/build"
+    if [ "$1" != "update" ]; then
+        rm -rf "$SOURCE_DIR/build"
+    fi
     mkdir "$SOURCE_DIR/build"
     cd "$SOURCE_DIR/build" || { echo "Failed to change to build directory. Exiting."; exit 1; }
     cmake "$SOURCE_DIR" \
