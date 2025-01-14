@@ -126,6 +126,21 @@ mkdir /home/$SETUP_AUTH_USER/logs/
 
 CORE_REPO_URL_NO_HTTPS="${CORE_REPO_URL#https://}"
 
+build_source() {
+    ## Build source
+    echo "Building source...."
+    cd /home/$SETUP_AUTH_USER/source/
+    mkdir /home/$SETUP_AUTH_USER/source/build
+    cd /home/$SETUP_AUTH_USER/source/build
+    if [ "$1" != "update" ]; then
+    cmake /home/$SETUP_AUTH_USER/source/ -DCMAKE_INSTALL_PREFIX=/home/$SETUP_AUTH_USER/server -DSCRIPTS=0 -DUSE_COREPCH=1 -DUSE_SCRIPTPCH=1 -DSERVERS=1 -DTOOLS=0 -DCMAKE_BUILD_TYPE=Release -DWITH_COREDEBUG=0 -DWITH_WARNINGS=0
+    fi
+    make -j $(( $(nproc) - 1 ))
+    make install
+    MAKE_INSTALLED="true"
+}
+
+
 if [ -d "/home/$SETUP_AUTH_USER/source" ]; then
     if [ "$1" = "update" ]; then
         cd /home/$SETUP_AUTH_USER/source || exit 1
@@ -167,16 +182,7 @@ if [ -f "/home/$SETUP_AUTH_USER/server/bin/authserver" ]; then
         while true; do
             read -p "Authserver already exists. Recompile source? (y/n): " file_choice
             if [[ "$file_choice" =~ ^[Yy]$ ]]; then
-                ## Build source
-                echo "Building source...."
-                cd /home/$SETUP_AUTH_USER/source/
-                rm -rf /home/$SETUP_AUTH_USER/source/build
-                mkdir /home/$SETUP_AUTH_USER/source/build
-                cd /home/$SETUP_AUTH_USER/source/build
-                cmake /home/$SETUP_AUTH_USER/source/ -DCMAKE_INSTALL_PREFIX=/home/$SETUP_AUTH_USER/server -DSCRIPTS=0 -DUSE_COREPCH=1 -DUSE_SCRIPTPCH=1 -DSERVERS=1 -DTOOLS=0 -DCMAKE_BUILD_TYPE=Release -DWITH_COREDEBUG=0 -DWITH_WARNINGS=0
-                make -j $(( $(nproc) - 1 ))
-                make install
-                MAKE_INSTALLED="true"
+                build_source
                 break
             elif [[ "$file_choice" =~ ^[Nn]$ ]]; then
                 echo "Skipping download." && break
@@ -185,26 +191,10 @@ if [ -f "/home/$SETUP_AUTH_USER/server/bin/authserver" ]; then
             fi
         done
     else
-        ## Build source
-        echo "Building source...."
-        cd /home/$SETUP_AUTH_USER/source/
-        mkdir /home/$SETUP_AUTH_USER/source/build
-        cd /home/$SETUP_AUTH_USER/source/build
-        cmake /home/$SETUP_AUTH_USER/source/ -DCMAKE_INSTALL_PREFIX=/home/$SETUP_AUTH_USER/server -DSCRIPTS=0 -DUSE_COREPCH=1 -DUSE_SCRIPTPCH=1 -DSERVERS=1 -DTOOLS=0 -DCMAKE_BUILD_TYPE=Release -DWITH_COREDEBUG=0 -DWITH_WARNINGS=0
-        make -j $(( $(nproc) - 1 ))
-        make install
-        MAKE_INSTALLED="true"
+        build_source
     fi
 else
-    ## Build source
-    echo "Building source...."
-    cd /home/$SETUP_AUTH_USER/source/
-    mkdir /home/$SETUP_AUTH_USER/source/build
-    cd /home/$SETUP_AUTH_USER/source/build
-    cmake /home/$SETUP_AUTH_USER/source/ -DCMAKE_INSTALL_PREFIX=/home/$SETUP_AUTH_USER/server -DSCRIPTS=0 -DUSE_COREPCH=1 -DUSE_SCRIPTPCH=1 -DSERVERS=1 -DTOOLS=0 -DCMAKE_BUILD_TYPE=Release -DWITH_COREDEBUG=0 -DWITH_WARNINGS=0
-    make -j $(( $(nproc) - 1 ))
-    make install
-    MAKE_INSTALLED="true"
+
 fi
 fi
 

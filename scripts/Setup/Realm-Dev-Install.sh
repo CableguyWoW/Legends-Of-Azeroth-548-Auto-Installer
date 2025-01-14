@@ -155,6 +155,7 @@ build_source() {
     fi
     mkdir "$SOURCE_DIR/build"
     cd "$SOURCE_DIR/build" || { echo "Failed to change to build directory. Exiting."; exit 1; }
+    if [ "$1" != "update" ]; then
     cmake "$SOURCE_DIR" \
         -DCMAKE_INSTALL_PREFIX="$SERVER_DIR" \
         -DWITH_DYNAMIC_LINKING=ON \
@@ -167,6 +168,7 @@ build_source() {
         -DCMAKE_BUILD_TYPE=RelWithDebInfo \
         -DWITH_COREDEBUG=0 \
         -DWITH_WARNINGS=0 || { echo "CMake failed. Exiting."; exit 1; }
+    fi
     make -j $(( $(nproc) - 1 )) || { echo "Build failed. Exiting."; exit 1; }
     make install || { echo "Install failed. Exiting."; exit 1; }
 }

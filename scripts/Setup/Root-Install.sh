@@ -95,6 +95,12 @@ if [ "$REMOTE_DB_SETUP" = "true" ]; then
     fi
 fi
 
+# Add secure-file-priv if not present
+if ! grep -q "^secure-file-priv" "$MY_CNF"; then
+    echo 'secure-file-priv=""' | sudo tee -a "$MY_CNF" > /dev/null
+fi
+
+
 # Restart the MySQL service to apply changes
 service mysql restart
 
