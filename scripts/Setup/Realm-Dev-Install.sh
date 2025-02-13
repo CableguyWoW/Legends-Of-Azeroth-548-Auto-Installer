@@ -665,6 +665,7 @@ sudo chmod +x /home/$SETUP_REALM_USER/server/scripts/Restarter/World/Normal/rest
 # Update script names
 sudo sed -i "s/realmname/$SETUP_REALM_USER/g" /home/$SETUP_REALM_USER/server/scripts/Restarter/World/GDB/start_gdb.sh
 sudo sed -i "s/realmname/$SETUP_REALM_USER/g" /home/$SETUP_REALM_USER/server/scripts/Restarter/World/Normal/start.sh
+sudo chown $SETUP_REALM_USER:$SETUP_REALM_USER home/$SETUP_REALM_USER/server/scripts/ -R
 # Setup Crontab
 crontab -r
 if [ $SETUP_TYPE == "GDB" ]; then
@@ -714,6 +715,7 @@ echo "##########################################################"
 echo ""
 
 start_server() {
+sudo chown $SETUP_REALM_USER:$SETUP_REALM_USER home/$SETUP_REALM_USER/server/scripts/ -R
 if [ $SETUP_TYPE == "GDB" ]; then
     echo "REALM STARTED IN GDB MODE!"
     /home/$SETUP_REALM_USER/server/scripts/Restarter/World/GDB/start_gdb.sh
