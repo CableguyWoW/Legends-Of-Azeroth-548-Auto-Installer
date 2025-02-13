@@ -68,14 +68,6 @@ if [ -n "$SCREEN_SESSIONS" ]; then
 else
   echo "No screen sessions found for user $SETUP_REALM_USER."
 fi
-
-PIDS_WORLD=$(pgrep -u "$SETUP_REALM_USER" -f worldserverd)
-if [ -n "$PIDS_WORLD" ]; then
-  kill -9 $PIDS_WORLD
-  echo "Killed worldserverd processes with PIDs: $PIDS_WORLD"
-else
-  echo "No worldserverd processes found for the user $SETUP_REALM_USER."
-fi
 fi
 
 
@@ -734,6 +726,8 @@ echo "##########################################################"
 echo "## $NUM.Start Server"
 echo "##########################################################"
 echo ""
+
+start_server() {
 if [ $SETUP_TYPE == "GDB" ]; then
     echo "REALM STARTED IN GDB MODE!"
     /home/$SETUP_REALM_USER/server/scripts/Restarter/World/GDB/start_gdb.sh
@@ -741,6 +735,14 @@ fi
 if [ $SETUP_TYPE == "Normal" ]; then
     echo "REALM STARTED IN NORMAL MODE!"
     /home/$SETUP_REALM_USER/server/scripts/Restarter/World/Normal/start.sh
+fi
+}
+
+SCREEN_SESSIONS=$(screen -ls | grep "\.$SETUP_REALM_USER" | awk '{print $1}')
+if [ -n "$SCREEN_SESSIONS" ]; then
+    echo "Server already running, please run restart or stop commands."
+else
+    start_server;
 fi
 fi
 

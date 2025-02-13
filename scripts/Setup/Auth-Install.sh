@@ -62,14 +62,6 @@ if [ -n "$SCREEN_SESSIONS" ]; then
 else
   echo "No screen sessions found for user $SETUP_AUTH_USER."
 fi
-
-PIDS_AUTH=$(pgrep -u "$SETUP_AUTH_USER" -f authserverd)
-if [ -n "$PIDS_AUTH" ]; then
-  kill -9 $PIDS_AUTH
-  echo "Killed authserverd processes with PIDs: $PIDS_AUTH"
-else
-  echo "No authserverd processes found for the user $SETUP_AUTH_USER."
-fi
 fi
 
 
@@ -287,8 +279,13 @@ echo "##########################################################"
 echo "## $NUM.Starting Authserver"
 echo "##########################################################"
 echo ""
-/home/$SETUP_AUTH_USER/server/scripts/Restarter/Auth/start.sh
-echo "Authserver started"
+SCREEN_SESSIONS=$(screen -ls | grep "\.$SETUP_AUTH_USER" | awk '{print $1}')
+if [ -n "$SCREEN_SESSIONS" ]; then
+    echo "Authserver already running, please run restart or stop commands."
+else
+    /home/$SETUP_AUTH_USER/server/scripts/Restarter/Auth/start.sh
+    echo "Authserver started"
+fi
 fi
 
 
