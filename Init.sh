@@ -302,11 +302,10 @@ echo "  echo -e 'configdev: Edit the realm development configuration'" >> ~/.bas
 echo "}" >> ~/.bashrc
 
 echo -e "\n## RUN" >> ~/.bashrc
-echo "runinit() { cd /Legends-Of-Azeroth-548-Auto-Installer/ && ./Init.sh \$1 && cd -; }" >> ~/.bashrc
-echo "runroot() { cd /Legends-Of-Azeroth-548-Auto-Installer/scripts/Setup/ && ./Root-Install.sh \$1 && cd -; }" >> ~/.bashrc
-echo "runauth() { source /Legends-Of-Azeroth-548-Auto-Installer/configs/auth-config && su - \$SETUP_AUTH_USER -c \"cd /Legends-Of-Azeroth-548-Auto-Installer/scripts/Setup/ && ./Auth-Install.sh \$1 && cd -\"; }" >> ~/.bashrc
-echo "rundev() { source /Legends-Of-Azeroth-548-Auto-Installer/configs/realm-dev-config su - \$SETUP_REALM_USER -c \"cd /Legends-Of-Azeroth-548-Auto-Installer/scripts/Setup/ && ./Realm-Dev-Install.sh \$1 && cd -\"; }" >> ~/.bashrc
-
+echo "runinit() { cd /Legends-Of-Azeroth-548-Auto-Installer/; ./Init.sh \$1; cd -; }" >> ~/.bashrc
+echo "runroot() { cd /Legends-Of-Azeroth-548-Auto-Installer/scripts/Setup/; ./Root-Install.sh \$1; cd -; }" >> ~/.bashrc
+echo "runauth() { source /Legends-Of-Azeroth-548-Auto-Installer/configs/auth-config; su - \$SETUP_AUTH_USER -c \"cd /Legends-Of-Azeroth-548-Auto-Installer/scripts/Setup/ && ./Auth-Install.sh \$1 && cd -\"; }" >> ~/.bashrc
+echo "rundev() { source /Legends-Of-Azeroth-548-Auto-Installer/configs/realm-dev-config; su - \$SETUP_REALM_USER -c \"cd /Legends-Of-Azeroth-548-Auto-Installer/scripts/Setup/ && ./Realm-Dev-Install.sh \$1 && cd -\"; }" >> ~/.bashrc
 
 echo -e "\n## UPDATE" >> ~/.bashrc
 echo "alias updateall='updateinstaller && updateroot && updateauth && updatedev'" >> ~/.bashrc
