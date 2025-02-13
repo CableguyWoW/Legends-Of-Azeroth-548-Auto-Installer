@@ -265,7 +265,7 @@ sudo cp -r -u /Legends-Of-Azeroth-548-Auto-Installer/scripts/Restarter/Auth/* /h
 ## FIX SCRIPTS PERMISSIONS
 sudo chmod +x /home/$SETUP_AUTH_USER/server/scripts/Restarter/Auth/start.sh
 sed -i "s/realmname/$SETUP_AUTH_USER/g" /home/$SETUP_AUTH_USER/server/scripts/Restarter/Auth/start.sh
-sudo chown $SETUP_AUTH_USER:$SETUP_AUTH_USER home/$SETUP_AUTH_USER/server/scripts/ -R
+sudo chown $SETUP_AUTH_USER:$SETUP_AUTH_USER /home/$SETUP_AUTH_USER/server/scripts/ -R
 crontab -r
 crontab -l | { cat; echo "############## START AUTHSERVER ##############"; } | crontab -
 crontab -l | { cat; echo "@reboot /home/$SETUP_AUTH_USER/server/scripts/Restarter/Auth/start.sh"; } | crontab -
@@ -284,7 +284,7 @@ SCREEN_SESSIONS=$(screen -ls | grep "\.$SETUP_AUTH_USER" | awk '{print $1}')
 if [ -n "$SCREEN_SESSIONS" ]; then
     echo "Authserver already running, please run restart or stop commands."
 else
-    sudo chown $SETUP_AUTH_USER:$SETUP_AUTH_USER home/$SETUP_AUTH_USER/server/scripts/ -R
+    sudo chown $SETUP_AUTH_USER:$SETUP_AUTH_USER /home/$SETUP_AUTH_USER/server/scripts/ -R
     /home/$SETUP_AUTH_USER/server/scripts/Restarter/Auth/start.sh
     echo "Authserver started"
 fi
