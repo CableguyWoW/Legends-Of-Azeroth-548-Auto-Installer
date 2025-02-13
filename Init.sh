@@ -302,27 +302,26 @@ echo "  echo -e 'configdev: Edit the realm development configuration'" >> ~/.bas
 echo "}" >> ~/.bashrc
 
 echo -e "\n## RUN" >> ~/.bashrc
+echo -e "\n## RUN" >> ~/.bashrc
 echo "runinit() {" >> ~/.bashrc
-echo "  cd /Legends-Of-Azeroth-548-Auto-Installer/;" >> ~/.bashrc
-echo "  ./Init.sh \$1;" >> ~/.bashrc
-echo "  cd -;" >> ~/.bashrc
+echo "  PARAM=\${1:-};" >> ~/.bashrc
+echo "  cd /Legends-Of-Azeroth-548-Auto-Installer/ && ./Init.sh \$PARAM && cd -;" >> ~/.bashrc
 echo "}" >> ~/.bashrc
-
 echo "runroot() {" >> ~/.bashrc
-echo "  cd /Legends-Of-Azeroth-548-Auto-Installer/scripts/Setup/;" >> ~/.bashrc
-echo "  ./Root-Install.sh \$1;" >> ~/.bashrc
-echo "  cd -;" >> ~/.bashrc
+echo "  PARAM=\${1:-};" >> ~/.bashrc
+echo "  cd /Legends-Of-Azeroth-548-Auto-Installer/scripts/Setup/ && ./Root-Install.sh \$PARAM && cd -;" >> ~/.bashrc
 echo "}" >> ~/.bashrc
-
 echo "runauth() {" >> ~/.bashrc
+echo "  PARAM=\${1:-};" >> ~/.bashrc
 echo "  source /Legends-Of-Azeroth-548-Auto-Installer/configs/auth-config;" >> ~/.bashrc
-echo "  su - \$SETUP_AUTH_USER -c \"cd /Legends-Of-Azeroth-548-Auto-Installer/scripts/Setup/ && ./Auth-Install.sh \$1 && cd -\";" >> ~/.bashrc
+echo "  su - \$SETUP_AUTH_USER -c \"cd /Legends-Of-Azeroth-548-Auto-Installer/scripts/Setup/ && ./Auth-Install.sh \$PARAM && cd -\";" >> ~/.bashrc
+echo "}" >> ~/.bashrc
+echo "rundev() {" >> ~/.bashrc
+echo "  PARAM=\${1:-};" >> ~/.bashrc
+echo "  source /Legends-Of-Azeroth-548-Auto-Installer/configs/realm-dev-config;" >> ~/.bashrc
+echo "  su - \$SETUP_REALM_USER -c \"cd /Legends-Of-Azeroth-548-Auto-Installer/scripts/Setup/ && ./Realm-Dev-Install.sh \$PARAM && cd -\";" >> ~/.bashrc
 echo "}" >> ~/.bashrc
 
-echo "rundev() {" >> ~/.bashrc
-echo "  source /Legends-Of-Azeroth-548-Auto-Installer/configs/realm-dev-config;" >> ~/.bashrc
-echo "  su - \$SETUP_REALM_USER -c \"cd /Legends-Of-Azeroth-548-Auto-Installer/scripts/Setup/ && ./Realm-Dev-Install.sh \$1 && cd -\";" >> ~/.bashrc
-echo "}" >> ~/.bashrc
 
 echo -e "\n## UPDATE" >> ~/.bashrc
 echo "alias updateall='updateinstaller && updateroot && updateauth && updatedev'" >> ~/.bashrc
