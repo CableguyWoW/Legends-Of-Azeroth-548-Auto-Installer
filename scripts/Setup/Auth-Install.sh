@@ -53,22 +53,23 @@ echo "## $NUM.Closing Authserver"
 echo "##########################################################"
 echo ""
 
-PIDS=$(pgrep -u "$SETUP_AUTH_USER" -f authserverd)
-if [ -n "$PIDS" ]; then
-  kill -9 $PIDS
-  echo "Killed authserverd processes with PIDs: $PIDS"
+SCREEN_SESSIONS=$(screen -ls | grep "\.$SETUP_AUTH_USER" | awk '{print $1}')
+if [ -n "$SCREEN_SESSIONS" ]; then
+  for session in $SCREEN_SESSIONS; do
+    screen -S "$session" -X kill
+    echo "Killed screen session: $session"
+  done
+else
+  echo "No screen sessions found for user $SETUP_AUTH_USER."
+fi
+
+PIDS_AUTH=$(pgrep -u "$SETUP_AUTH_USER" -f authserverd)
+if [ -n "$PIDS_AUTH" ]; then
+  kill -9 $PIDS_AUTH
+  echo "Killed authserverd processes with PIDs: $PIDS_AUTH"
 else
   echo "No authserverd processes found for the user $SETUP_AUTH_USER."
 fi
-
-SCREEN_PIDS=$(pgrep -u "$SETUP_AUTH_USER" -f screen)
-if [ -n "$SCREEN_PIDS" ]; then
-  kill -9 $SCREEN_PIDS
-  echo "Killed screen sessions with PIDs: $SCREEN_PIDS"
-else
-  echo "No screen sessions found for the user $SETUP_AUTH_USER."
-fi
-
 fi
 
 

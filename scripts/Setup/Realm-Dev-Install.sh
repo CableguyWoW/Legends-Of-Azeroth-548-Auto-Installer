@@ -58,6 +58,17 @@ echo "## $NUM.Closing Worldserver"
 echo "##########################################################"
 echo ""
 
+SCREEN_SESSIONS=$(screen -ls | grep "\.$SETUP_REALM_USER" | awk '{print $1}')
+if [ -n "$SCREEN_SESSIONS" ]; then
+  for session in $SCREEN_SESSIONS; do
+    # Force kill each screen session
+    screen -S "$session" -X kill
+    echo "Killed screen session: $session"
+  done
+else
+  echo "No screen sessions found for user $SETUP_REALM_USER."
+fi
+
 PIDS_WORLD=$(pgrep -u "$SETUP_REALM_USER" -f worldserverd)
 if [ -n "$PIDS_WORLD" ]; then
   kill -9 $PIDS_WORLD
@@ -65,15 +76,6 @@ if [ -n "$PIDS_WORLD" ]; then
 else
   echo "No worldserverd processes found for the user $SETUP_REALM_USER."
 fi
-
-SCREEN_PIDS=$(pgrep -u "$SETUP_REALM_USER" -f screen)
-if [ -n "$SCREEN_PIDS" ]; then
-  kill -9 $SCREEN_PIDS
-  echo "Killed screen sessions with PIDs: $SCREEN_PIDS"
-else
-  echo "No screen sessions found for the user $SETUP_REALM_USER."
-fi
-
 fi
 
 
@@ -500,8 +502,6 @@ cp /home/$SETUP_REALM_USER/server/bin/vmap4extractor /home/WoW548/
 cp /home/$SETUP_REALM_USER/server/bin/mmaps_generator /home/WoW548/
 cp /home/$SETUP_REALM_USER/server/bin/vmap4assembler /home/WoW548/
 echo "Client tools copied over to /home/WoW548"
-else
-echo "No need to setup client tools as client download disabled."
 fi
 
 
