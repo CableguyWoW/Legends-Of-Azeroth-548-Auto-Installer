@@ -191,6 +191,8 @@ if [ -f "/home/$SETUP_AUTH_USER/server/bin/authserver" ]; then
     else
         build_source
     fi
+else
+    build_source
 fi
 fi
 
