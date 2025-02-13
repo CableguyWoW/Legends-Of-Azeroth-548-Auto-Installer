@@ -52,8 +52,23 @@ echo "##########################################################"
 echo "## $NUM.Closing Authserver"
 echo "##########################################################"
 echo ""
-sudo systemctl stop authserverd
-sudo pkill -u "$SETUP_AUTH_USER" -f screen
+
+PIDS=$(pgrep -u "$SETUP_AUTH_USER" -f authserverd)
+if [ -n "$PIDS" ]; then
+  kill -9 $PIDS
+  echo "Killed authserverd processes with PIDs: $PIDS"
+else
+  echo "No authserverd processes found for the user $SETUP_AUTH_USER."
+fi
+
+SCREEN_PIDS=$(pgrep -u "$SETUP_AUTH_USER" -f screen)
+if [ -n "$SCREEN_PIDS" ]; then
+  kill -9 $SCREEN_PIDS
+  echo "Killed screen sessions with PIDs: $SCREEN_PIDS"
+else
+  echo "No screen sessions found for the user $SETUP_AUTH_USER."
+fi
+
 fi
 
 

@@ -57,8 +57,23 @@ echo "##########################################################"
 echo "## $NUM.Closing Worldserver"
 echo "##########################################################"
 echo ""
-sudo systemctl stop worldserverd
-sudo pkill -u "$SETUP_REALM_USER" -f screen
+
+PIDS_WORLD=$(pgrep -u "$SETUP_REALM_USER" -f worldserverd)
+if [ -n "$PIDS_WORLD" ]; then
+  kill -9 $PIDS_WORLD
+  echo "Killed worldserverd processes with PIDs: $PIDS_WORLD"
+else
+  echo "No worldserverd processes found for the user $SETUP_REALM_USER."
+fi
+
+SCREEN_PIDS=$(pgrep -u "$SETUP_REALM_USER" -f screen)
+if [ -n "$SCREEN_PIDS" ]; then
+  kill -9 $SCREEN_PIDS
+  echo "Killed screen sessions with PIDs: $SCREEN_PIDS"
+else
+  echo "No screen sessions found for the user $SETUP_REALM_USER."
+fi
+
 fi
 
 
