@@ -8,10 +8,9 @@
 . /Legends-Of-Azeroth-548-Auto-Installer/configs/auth-config
 
 if [ $USER != "$SETUP_AUTH_USER" ]; then
-
-echo "You must run this script under the $SETUP_AUTH_USER user!"
-
-else
+    echo "You must run this script under the $SETUP_AUTH_USER user!"
+    exit 1
+fi
 
 ## LETS START
 echo ""
@@ -42,8 +41,7 @@ echo ""
 ((NUM++)); echo "- [$NUM] : Start Authserver"
 ((NUM++)); echo "- [$NUM] : Final Message"
 echo ""
-
-else
+fi
 
 
 NUM=0
@@ -294,7 +292,4 @@ echo ""
 echo -e "\e[32m→→→→→\e[0m rundev"
 echo ""
 echo ""
-fi
-
-fi
 fi

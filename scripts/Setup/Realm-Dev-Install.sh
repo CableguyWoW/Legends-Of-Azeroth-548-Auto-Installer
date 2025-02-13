@@ -409,6 +409,7 @@ echo "## $NUM.Download 5.4.8 Client"
 echo "##########################################################"
 echo ""
 FILENAME="${CLIENT_URL##*/}"
+DOWNLOAD_SKIPPED="false"
 cd /home/
 if [ -f "$FILENAME" ]; then
     while true; do
@@ -460,9 +461,7 @@ if [ -f "/home/$FILENAME" ]; then
     while true; do
         read -p "Would you like to delete the 5.4.8 client zip folder to save folder space? (y/n): " folder_choice
         if [[ "$folder_choice" =~ ^[Yy]$ ]]; then
-            if [ "$DOWNLOAD_SKIPPED" != "true" ]; then
             sudo rm $FILENAME
-            fi
             break
         elif [[ "$folder_choice" =~ ^[Nn]$ ]]; then
             echo "Skipping deletion." && break
@@ -481,7 +480,6 @@ echo "##########################################################"
 echo "## $NUM.Setup Client Tools"
 echo "##########################################################"
 echo ""
-if [ "$DOWNLOAD_SKIPPED" == "true" ]; then
 cp /home/$SETUP_REALM_USER/server/bin/mapextractor /home/WoW548/
 cp /home/$SETUP_REALM_USER/server/bin/vmap4extractor /home/WoW548/
 cp /home/$SETUP_REALM_USER/server/bin/mmaps_generator /home/WoW548/
@@ -489,7 +487,6 @@ cp /home/$SETUP_REALM_USER/server/bin/vmap4assembler /home/WoW548/
 echo "Client tools copied over to /home/WoW548"
 else
 echo "No need to setup client tools as client download disabled."
-fi
 fi
 
 
