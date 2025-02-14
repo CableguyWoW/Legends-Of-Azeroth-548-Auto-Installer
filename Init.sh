@@ -186,10 +186,11 @@ echo "commands() {" >> ~/.bashrc
 echo "  echo -e '-------------------------------------------------------'" >> ~/.bashrc
 echo "  echo -e '\n## Run Commands'" >> ~/.bashrc
 echo "  echo -e '-------------------------------------------------------'" >> ~/.bashrc
-echo "  echo -e 'runinit : Run the initial installation script (displays all available parameters)'" >> ~/.bashrc
-echo "  echo -e 'runroot: Run the root installation script (displays all available parameters)'" >> ~/.bashrc
-echo "  echo -e 'runauth: Run the authentication installation script (displays all available parameters)'" >> ~/.bashrc
-echo "  echo -e 'rundev: Run the realm development installation script (displays all available parameters)'" >> ~/.bashrc
+echo "  echo -e 'runall: Run all installation steps'" >> ~/.bashrc
+echo "  echo -e 'runinit: Run the initial installation script'" >> ~/.bashrc
+echo "  echo -e 'runroot: Run the root installation script'" >> ~/.bashrc
+echo "  echo -e 'runauth: Run the authentication installation script'" >> ~/.bashrc
+echo "  echo -e 'rundev: Run the realm development installation script'" >> ~/.bashrc
 echo "  echo -e '-------------------------------------------------------'" >> ~/.bashrc
 echo "  echo -e '\n## Update Commands'" >> ~/.bashrc
 echo "  echo -e '-------------------------------------------------------'" >> ~/.bashrc
@@ -234,10 +235,11 @@ echo "commandsrun() {" >> ~/.bashrc
 echo "  echo -e '-------------------------------------------------------'" >> ~/.bashrc
 echo "  echo -e '\n## Run Commands'" >> ~/.bashrc
 echo "  echo -e '-------------------------------------------------------'" >> ~/.bashrc
-echo "  echo -e 'runinit : Run the initial installation script (displays all available parameters)'" >> ~/.bashrc
-echo "  echo -e 'runroot: Run the root installation script (displays all available parameters)'" >> ~/.bashrc
-echo "  echo -e 'runauth: Run the authentication installation script (displays all available parameters)'" >> ~/.bashrc
-echo "  echo -e 'rundev: Run the realm development installation script (displays all available parameters)'" >> ~/.bashrc
+echo "  echo -e 'runall: Run all installation steps'" >> ~/.bashrc
+echo "  echo -e 'runinit: Run the initial installation script'" >> ~/.bashrc
+echo "  echo -e 'runroot: Run the root installation script'" >> ~/.bashrc
+echo "  echo -e 'runauth: Run the authentication installation script'" >> ~/.bashrc
+echo "  echo -e 'rundev: Run the realm development installation script'" >> ~/.bashrc
 echo "}" >> ~/.bashrc
 
 # Function to list all update-related commands
@@ -302,24 +304,11 @@ echo "  echo -e 'configdev: Edit the realm development configuration'" >> ~/.bas
 echo "}" >> ~/.bashrc
 
 echo -e "\n## RUN" >> ~/.bashrc
-echo 'runinit() {' >> ~/.bashrc
-echo '  PARAM="${1:-}";' >> ~/.bashrc
-echo '  cd /Legends-Of-Azeroth-548-Auto-Installer/ && ./Init.sh $PARAM && cd -;' >> ~/.bashrc
-echo '}' >> ~/.bashrc
-echo 'runroot() {' >> ~/.bashrc
-echo '  PARAM="${1:-}";' >> ~/.bashrc
-echo '  cd /Legends-Of-Azeroth-548-Auto-Installer/scripts/Setup/ && ./Root-Install.sh $PARAM && cd -;' >> ~/.bashrc
-echo '}' >> ~/.bashrc
-echo 'runauth() {' >> ~/.bashrc
-echo '  PARAM="${1:-}";' >> ~/.bashrc
-echo '  source /Legends-Of-Azeroth-548-Auto-Installer/configs/auth-config;' >> ~/.bashrc
-echo '  su - $SETUP_AUTH_USER -c "cd /Legends-Of-Azeroth-548-Auto-Installer/scripts/Setup/ && ./Auth-Install.sh $PARAM && cd -";' >> ~/.bashrc
-echo '}' >> ~/.bashrc
-echo 'rundev() {' >> ~/.bashrc
-echo '  PARAM="${1:-}";' >> ~/.bashrc
-echo '  source /Legends-Of-Azeroth-548-Auto-Installer/configs/realm-dev-config;' >> ~/.bashrc
-echo '  su - $SETUP_REALM_USER -c "cd /Legends-Of-Azeroth-548-Auto-Installer/scripts/Setup/ && ./Realm-Dev-Install.sh $PARAM && cd -";' >> ~/.bashrc
-echo '}' >> ~/.bashrc
+echo "alias runall='runinit && runroot && runauth && rundev'" >> ~/.bashrc
+echo "alias runinit='cd /Legends-Of-Azeroth-548-Auto-Installer/ && ./Init.sh all && cd -'" >> ~/.bashrc
+echo "alias runroot='cd /Legends-Of-Azeroth-548-Auto-Installer/scripts/Setup/ && ./Root-Install.sh all && cd -'" >> ~/.bashrc
+echo "alias runauth='source /Legends-Of-Azeroth-548-Auto-Installer/configs/auth-config && su - \$SETUP_AUTH_USER -c \"cd /Legends-Of-Azeroth-548-Auto-Installer/scripts/Setup/ && ./Auth-Install.sh all && cd -\"'" >> ~/.bashrc
+echo "alias rundev='source /Legends-Of-Azeroth-548-Auto-Installer/configs/realm-dev-config su - \$SETUP_REALM_USER -c \"cd /Legends-Of-Azeroth-548-Auto-Installer/scripts/Setup/ && ./Realm-Dev-Install.sh all && cd -\"'" >> ~/.bashrc
 
 echo -e "\n## UPDATE" >> ~/.bashrc
 echo "alias updateall='updateinstaller && updateroot && updateauth && updatedev'" >> ~/.bashrc
